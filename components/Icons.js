@@ -89,6 +89,51 @@ export function TrashIcon(props) {
   )
 }
 
+export function PhoneMoneyIcon(props) {
+  return (
+    <Svg {...props}>
+      <rect x="6" y="2.5" width="12" height="19" rx="2.5" />
+      <path d="M10.5 18.5h3M12 7v6M14 8.3c-.4-.5-1.1-.8-2-.8-1.1 0-2 .6-2 1.4 0 1.9 4 1 4 2.9 0 .8-.9 1.4-2 1.4-.9 0-1.6-.3-2-.8" />
+    </Svg>
+  )
+}
+
+export function TruckIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M2.5 6h11v10h-11zM13.5 9.5h4l3 3.5V16h-7" />
+      <circle cx="6.5" cy="17.5" r="1.8" />
+      <circle cx="17" cy="17.5" r="1.8" />
+    </Svg>
+  )
+}
+
+export function ShieldIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M12 2.8 4.5 5.6v5.6c0 4.6 3.1 8.4 7.5 10 4.4-1.6 7.5-5.4 7.5-10V5.6z" />
+      <path d="m8.8 12 2.2 2.2 4.2-4.4" />
+    </Svg>
+  )
+}
+
+export function ChatIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M20.5 12a8 8 0 0 1-11.7 7.1L3.5 20.5l1.4-5.1A8 8 0 1 1 20.5 12z" />
+      <path d="M8.5 11h7M8.5 14h4" />
+    </Svg>
+  )
+}
+
+export function ArrowRightIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </Svg>
+  )
+}
+
 export function WhatsAppIcon({ size = 26 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
