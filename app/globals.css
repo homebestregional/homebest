@@ -270,6 +270,112 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) { .hero-product, .hero-floor { animation: none; } }
 @media (max-width: 899px) { .hero { padding-top: 40px; } .hero-stage { width: min(78%, 380px); } }
 
+/* Video hero: Tembo the white elephant, full width (used when site.heroVideo is set) */
+.vhero {
+  --vhero-overlap: 84px; /* how far the category cards sit up over the video */
+  --vhero-night: 4, 10, 34;
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: center;
+  min-height: 580px;
+  height: min(calc(100svh - 68px), 56.25vw);
+  max-height: 900px;
+  padding: 48px 0 calc(var(--vhero-overlap) + 32px);
+  color: #fff;
+  background: rgb(var(--vhero-night));
+}
+.vhero-media { position: absolute; inset: 0; z-index: -2; }
+.vhero-media img,
+.vhero-media video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 72% 50%;
+}
+.vhero-media video { opacity: 0; transition: opacity 0.9s ease; }
+.vhero-media video.is-playing { opacity: 1; }
+.vhero-shade { /* darkens behind the words so they are always easy to read */
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(var(--vhero-night), 0.9) 0%, rgba(var(--vhero-night), 0.66) 28%, rgba(var(--vhero-night), 0.14) 52%, rgba(var(--vhero-night), 0) 66%),
+    linear-gradient(180deg, rgba(var(--vhero-night), 0) 68%, rgba(var(--vhero-night), 0.6) 100%);
+}
+.vhero-copy { position: relative; width: 100%; }
+.vhero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  font-family: var(--font-display); font-size: 0.76rem; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase; color: rgba(236, 238, 255, 0.82);
+}
+.vhero-eyebrow::before { content: ''; width: 28px; height: 1.5px; background: var(--accent); }
+.vhero h1 {
+  color: #fff;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4.7rem);
+  line-height: 1.02; letter-spacing: -0.035em;
+  max-width: 10.5ch; margin: 0 0 22px;
+  text-shadow: 0 2px 30px rgba(var(--vhero-night), 0.35);
+}
+.vhero h1 span { display: block; text-wrap: balance; }
+.vhero-accent { /* the second line takes Tembo's colours */
+  background: linear-gradient(92deg, #ffd36e 0%, #ff8ac9 30%, #b18cff 60%, #5fe3ff 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  padding-bottom: 0.08em;
+}
+.vhero p {
+  font-size: 1.12rem; line-height: 1.6; max-width: 38ch;
+  color: rgba(236, 238, 255, 0.88); margin-bottom: 30px;
+}
+.btn-glass {
+  background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.4); color: #fff;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.btn-glass:hover { background: rgba(255, 255, 255, 0.16); border-color: #fff; color: #fff; }
+.vhero-toggle {
+  position: absolute; right: var(--gutter); bottom: calc(var(--vhero-overlap) + 18px); z-index: 3;
+  width: 40px; height: 40px; display: grid; place-items: center; padding: 0;
+  border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(var(--vhero-night), 0.35); color: #fff; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  opacity: 0.72; transition: opacity 0.2s;
+}
+.vhero-toggle:hover, .vhero-toggle:focus-visible { opacity: 1; }
+/* The words rise in gently */
+.vhero-copy > * { animation: vhero-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.vhero-copy > :nth-child(2) { animation-delay: 0.12s; }
+.vhero-copy > :nth-child(3) { animation-delay: 0.24s; }
+.vhero-copy > :nth-child(4) { animation-delay: 0.36s; }
+@keyframes vhero-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .vhero-copy > * { animation: none; }
+  .vhero-media video { transition: none; }
+}
+/* Phones: words on top, then the tall video in its own shape.
+   The top of the tall video is empty night sky, so it slides up under the words. */
+@media (max-width: 767px) {
+  .vhero {
+    --vhero-overlap: 44px;
+    flex-direction: column; align-items: stretch;
+    height: auto; min-height: 0; max-height: none;
+    padding: 28px 0 0;
+  }
+  .vhero-copy { order: 1; }
+  .vhero-media {
+    position: relative; inset: auto; order: 2;
+    width: 100%; aspect-ratio: 9 / 16;
+    margin-top: -50vw;
+  }
+  .vhero-media::before { /* blends the top edge of the video into the dark banner */
+    content: ''; position: absolute; inset: 0 0 auto; height: 24%; z-index: 1;
+    background: linear-gradient(180deg, rgb(var(--vhero-night)) 0%, rgba(var(--vhero-night), 0) 100%);
+  }
+  .vhero-media img, .vhero-media video { object-position: 50% 50%; }
+  .vhero-shade { display: none; }
+  .vhero-toggle { bottom: calc(var(--vhero-overlap) + 14px); }
+  .vhero-eyebrow { margin-bottom: 12px; }
+  .vhero h1 { font-size: clamp(2.1rem, 9.6vw, 2.9rem); margin-bottom: 14px; }
+  .vhero p { font-size: 1rem; margin-bottom: 20px; }
+  .vhero + .needs { margin-top: -44px; }
+}
+
 .needs {
   margin-top: -84px;
   position: relative; z-index: 2;
