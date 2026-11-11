@@ -270,6 +270,28 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) { .hero-product, .hero-floor { animation: none; } }
 @media (max-width: 899px) { .hero { padding-top: 40px; } .hero-stage { width: min(78%, 380px); } }
 
+/* Home hero: Tembo the elephant roams a night-indigo sky. No words on it. */
+.tembo-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  height: calc(100vh - 68px);
+  height: calc(100svh - 68px);
+  min-height: 520px;
+  max-height: 980px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background:
+    radial-gradient(70% 80% at 62% 55%, rgba(78, 84, 214, 0.5) 0%, rgba(38, 41, 140, 0.22) 45%, rgba(11, 13, 44, 0) 78%),
+    linear-gradient(180deg, #161852 0%, #0b0d2c 62%, #07081f 100%);
+}
+.tembo-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tembo-fallback {
+  position: absolute; left: 50%; bottom: 110px; transform: translateX(-50%);
+  width: min(78%, 620px); height: auto; pointer-events: none;
+}
+@media (max-width: 699px) { .tembo-hero { min-height: 460px; } .tembo-fallback { bottom: 80px; } }
+
 .needs {
   margin-top: -84px;
   position: relative; z-index: 2;
