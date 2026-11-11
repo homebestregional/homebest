@@ -1,5 +1,9 @@
-import '@fontsource-variable/archivo/wdth.css'
-import '@fontsource-variable/bodoni-moda/opsz.css'
+// Montserrat for titles and headings, Poppins for body text
+import '@fontsource-variable/montserrat'
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/poppins/600.css'
+import '@fontsource/poppins/700.css'
 import './globals.css'
 import { site } from '@/lib/site'
 

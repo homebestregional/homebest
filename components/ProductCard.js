@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatKES } from '@/lib/format'
+import { formatKES, hasPrice } from '@/lib/format'
 import { DropIcon } from '@/components/Icons'
 import AddToCartButton from '@/components/AddToCartButton'
 
@@ -32,15 +32,27 @@ export default function ProductCard({ product, priority }) {
           {product.brand ? <div className="product-card-brand">{product.brand}</div> : null}
           <h3 className="product-card-name">{product.name}</h3>
           <div>
-            <span className="price">{formatKES(product.price)}</span>
-            {onSale ? <span className="price-old">{formatKES(product.compare_at_price)}</span> : null}
+            {hasPrice(product) ? (
+              <>
+                <span className="price">{formatKES(product.price)}</span>
+                {onSale ? <span className="price-old">{formatKES(product.compare_at_price)}</span> : null}
+              </>
+            ) : (
+              <span className="price price-ask">Price on request</span>
+            )}
           </div>
         </div>
       </Link>
-      <AddToCartButton
-        disabled={outOfStock}
-        product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image, maxQty }}
-      />
+      {hasPrice(product) ? (
+        <AddToCartButton
+          disabled={outOfStock}
+          product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image, maxQty }}
+        />
+      ) : (
+        <Link href={'/products/' + product.slug} className="btn btn-outline btn-small btn-block">
+          Ask for the price
+        </Link>
+      )}
     </article>
   )
 }

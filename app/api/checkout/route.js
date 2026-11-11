@@ -56,7 +56,7 @@ export async function POST(request) {
   const lines = []
   for (const [id, qty] of wanted) {
     const p = products.find((x) => x.id === id)
-    if (!p || !p.is_active) return fail('Something in your cart is no longer for sale. Please check your cart.', 409)
+    if (!p || !p.is_active || !(p.price > 0)) return fail('Something in your cart is no longer for sale. Please check your cart.', 409)
     if (p.track_stock && p.stock < qty) {
       return fail(
         p.stock > 0 ? `We only have ${p.stock} of ${p.name} left. Please change the quantity.` : `${p.name} just sold out. Please take it out of your cart.`,

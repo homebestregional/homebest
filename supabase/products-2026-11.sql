@@ -68,7 +68,7 @@ values
   '/videos/homebest-marker.mp4', true, true, 5
 ),
 (
-  -- Hidden until Homebest gives the price. Tick "Show in the shop" in /admin after adding the price.
+  -- Price 0 = "Price on request": shown in the shop, but it cannot be added to the cart until a price is set in /admin.
   'HY300 Mini Projector',
   'hy300-mini-projector',
   (select id from public.categories where slug = 'home-appliances'),
@@ -77,7 +77,7 @@ values
   null,
   0, false, 0,
   array['/products/hy300-mini-projector/main.webp', '/products/hy300-mini-projector/card.webp'],
-  '/videos/homebest-projector.mp4', false, false, 6
+  '/videos/homebest-projector.mp4', true, true, 6
 )
 on conflict (slug) do update set
   name = excluded.name,

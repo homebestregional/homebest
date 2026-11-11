@@ -23,8 +23,8 @@
   --danger-tint: #fdecea;
   --warning-tint: #fff4d6;
 
-  --font-display: 'Bodoni Moda Variable', 'Didot', Georgia, serif;
-  --font-body: 'Archivo Variable', system-ui, sans-serif;
+  --font-display: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif; /* titles and headings */
+  --font-body: 'Poppins', system-ui, sans-serif;                             /* body text */
 
   --radius-sm: 4px;
   --radius: 6px;
@@ -46,8 +46,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -57,21 +57,18 @@ a:hover { color: var(--brand-deep); }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-variation-settings: 'opsz' 28;
-  line-height: 1.12;
-  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   margin: 0 0 0.5em;
   color: var(--ink);
 }
-h3, h4 { font-family: var(--font-body); font-weight: 650; font-variation-settings: normal; }
-/* The staff panel keeps the plain, easy-to-scan font */
-.admin h1, .admin h2, .admin h3 { font-family: var(--font-body); font-weight: 700; font-variation-settings: normal; }
+h3, h4 { letter-spacing: 0; }
 .admin .btn { text-transform: none; letter-spacing: 0; font-size: 1rem; }
 /* Small uppercase label above headings */
 .eyebrow {
   display: inline-block; margin-bottom: 14px;
-  font-family: var(--font-body); font-size: 0.78rem; font-weight: 600; font-stretch: 115%;
+  font-family: var(--font-display); font-size: 0.76rem; font-weight: 600;
   letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent);
 }
 h1 { font-size: clamp(2rem, 5vw, 3.1rem); }
@@ -117,7 +114,7 @@ p { margin: 0 0 1em; }
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 48px; padding: 0 22px;
   border-radius: var(--radius); border: 1.5px solid transparent;
-  font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; font-stretch: 108%;
+  font-family: var(--font-display); font-weight: 600; font-size: 0.86rem;
   letter-spacing: 0.08em; text-transform: uppercase;
   text-decoration: none; cursor: pointer; white-space: nowrap;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
@@ -155,7 +152,6 @@ p { margin: 0 0 1em; }
 }
 .logo {
   font-family: var(--font-display);
-  font-stretch: 125%;
   font-weight: 800;
   font-size: 1.45rem;
   color: var(--brand-deep);
@@ -166,14 +162,14 @@ p { margin: 0 0 1em; }
 .logo:hover { color: var(--brand); }
 .logo img { height: 38px; width: auto; }
 @media (min-width: 720px) { .logo img { height: 44px; } }
-.main-nav { display: none; gap: 22px; }
+.main-nav { display: none; gap: 20px; flex-shrink: 0; white-space: nowrap; }
 .main-nav a {
-  color: var(--ink); text-decoration: none; font-weight: 550; font-size: 0.8rem;
-  letter-spacing: 0.14em; text-transform: uppercase; font-stretch: 108%;
+  color: var(--ink); text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
   padding: 6px 0; border-bottom: 1px solid transparent;
 }
 .main-nav a:hover { color: var(--brand); border-bottom-color: var(--accent); }
-.header-search { display: none; flex: 1; max-width: 340px; margin-left: auto; }
+.header-search { display: none; flex: 1; min-width: 180px; max-width: 320px; margin-left: auto; }
 .header-search input {
   width: 100%; height: 42px; padding: 0 14px;
   border: 1.5px solid var(--line); border-radius: 999px;
@@ -210,9 +206,11 @@ p { margin: 0 0 1em; }
 }
 @media (min-width: 960px) {
   .main-nav { display: flex; }
+  .menu-toggle { display: none; }
+}
+@media (min-width: 1200px) {
   .header-search { display: block; }
   .header-actions { margin-left: 0; }
-  .menu-toggle { display: none; }
 }
 
 /* Hero: night indigo studio with a floating product */
@@ -234,12 +232,11 @@ p { margin: 0 0 1em; }
 @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.05fr 1fr; gap: 24px; } }
 .hero h1 {
   color: #fff;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 96;
-  font-size: clamp(2.7rem, 7.4vw, 5.4rem);
-  line-height: 0.98;
-  letter-spacing: -0.01em;
-  max-width: 11ch;
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6.2vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  max-width: 12ch;
   margin-bottom: 22px;
 }
 .hero p {
@@ -304,7 +301,7 @@ p { margin: 0 0 1em; }
   .need h2 { font-size: 1.3rem; margin-bottom: 6px; }
   .need p { margin-bottom: 14px; font-size: 0.98rem; }
 }
-.need-go { font-weight: 600; color: var(--ink); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.need-go { font-family: var(--font-display); font-weight: 600; color: var(--ink); font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* Product grid and cards */
 .product-grid {
@@ -347,7 +344,9 @@ p { margin: 0 0 1em; }
   margin: 0 0 6px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.price { font-family: var(--font-body); font-weight: 650; font-size: 1.05rem; letter-spacing: 0.01em; white-space: nowrap; }
+.price { font-family: var(--font-body); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; white-space: nowrap; }
+.price-ask { color: var(--ink-soft); font-weight: 500; font-size: 0.95rem; }
+.product-price.price-ask { font-size: 1.35rem; color: var(--ink); }
 .price-old { display: inline-block; white-space: nowrap; color: var(--ink-soft); text-decoration: line-through; font-weight: 500; font-size: 0.92rem; margin-left: 8px; }
 
 .empty {

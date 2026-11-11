@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getProduct, getProducts } from '@/lib/data'
-import { featuresList, formatKES } from '@/lib/format'
+import { featuresList, formatKES, hasPrice } from '@/lib/format'
 import { site, whatsappLink } from '@/lib/site'
 import ProductGallery from '@/components/ProductGallery'
 import ProductBuy from '@/components/ProductBuy'
@@ -18,7 +18,9 @@ export async function generateMetadata({ params }) {
   if (!product) return { title: 'Product not found' }
   return {
     title: product.name,
-    description: product.short_description || `${product.name} for ${formatKES(product.price)}. Pay with M-Pesa or card.`,
+    description:
+      product.short_description ||
+      (hasPrice(product) ? `${product.name} for ${formatKES(product.price)}. Pay with M-Pesa or card.` : `${product.name} at Homebest.`),
     openGraph: { images: product.images?.[0] ? [product.images[0]] : [] },
   }
 }
@@ -41,7 +43,10 @@ export default async function ProductPage({ params }) {
   const features = featuresList(product.features)
   const stock = stockText(product)
   const onSale = product.compare_at_price && product.compare_at_price > product.price
-  const askHref = whatsappLink(`Hello Homebest, I have a question about: ${product.name}`)
+  const priced = hasPrice(product)
+  const askHref = whatsappLink(
+    priced ? `Hello Homebest, I have a question about: ${product.name}` : `Hello Homebest, please tell me the price of: ${product.name}`
+  )
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -51,14 +56,16 @@ export default async function ProductPage({ params }) {
     description: product.short_description || product.description || '',
     sku: product.sku || undefined,
     brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: 'KES',
-      price: product.price,
-      availability:
-        product.track_stock && product.stock <= 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
-      seller: { '@type': 'Organization', name: site.legalName },
-    },
+    offers: priced
+      ? {
+          '@type': 'Offer',
+          priceCurrency: 'KES',
+          price: product.price,
+          availability:
+            product.track_stock && product.stock <= 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+          seller: { '@type': 'Organization', name: site.legalName },
+        }
+      : undefined,
   }
 
   return (
@@ -82,15 +89,33 @@ export default async function ProductPage({ params }) {
           {product.brand ? <p className="muted" style={{ marginBottom: 6 }}>{product.brand}</p> : null}
           <h1>{product.name}</h1>
           {product.short_description ? <p className="muted">{product.short_description}</p> : null}
-          <div className="product-price price">
-            {formatKES(product.price)}
-            {onSale ? <span className="price-old">{formatKES(product.compare_at_price)}</span> : null}
-          </div>
-          <p className={'stock-note ' + stock.className}>{stock.text}</p>
+          {priced ? (
+            <>
+              <div className="product-price price">
+                {formatKES(product.price)}
+                {onSale ? <span className="price-old">{formatKES(product.compare_at_price)}</span> : null}
+              </div>
+              <p className={'stock-note ' + stock.className}>{stock.text}</p>
+              <ProductBuy product={product} />
+            </>
+          ) : (
+            <>
+              <div className="product-price price price-ask">Price on request</div>
+              <p className="muted">Ask us for today&rsquo;s price and we will get back to you quickly.</p>
+              <div className="buy-row">
+                {askHref ? (
+                  <a href={askHref} className="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+                    Ask on WhatsApp
+                  </a>
+                ) : null}
+                <Link href="/contact" className={askHref ? 'btn btn-outline' : 'btn btn-primary'}>
+                  Ask for the price
+                </Link>
+              </div>
+            </>
+          )}
 
-          <ProductBuy product={product} />
-
-          {askHref ? (
+          {priced && askHref ? (
             <p>
               <a href={askHref} target="_blank" rel="noopener noreferrer">
                 Ask us about this product on WhatsApp

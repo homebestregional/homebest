@@ -23,7 +23,7 @@ export async function POST(request) {
   const found = productsRes.data || []
   const products = ids.map((id) => {
     const p = found.find((x) => x.id === id)
-    if (!p || !p.is_active) return { id, available: false }
+    if (!p || !p.is_active || !(p.price > 0)) return { id, available: false }
     const maxQty = p.track_stock ? Math.max(p.stock, 0) : 20
     return {
       id: p.id,
