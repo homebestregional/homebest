@@ -75,7 +75,7 @@ export default async function ProductPage({ params }) {
               </>
             ) : null}
           </div>
-          <ProductGallery images={product.images || []} name={product.name} />
+          <ProductGallery images={product.images || []} name={product.name} video={product.video_url || ''} />
         </div>
 
         <div className="product-info">

@@ -2,30 +2,45 @@ import Link from 'next/link'
 import { site, whatsappLink } from '@/lib/site'
 import { getCategories, getProducts } from '@/lib/data'
 import { ProductGrid } from '@/components/ProductCard'
-import HeroSwoosh from '@/components/HeroSwoosh'
+import Image from 'next/image'
 
 export default async function HomePage() {
   const [categories, featured] = await Promise.all([getCategories(), getProducts({ featured: true, limit: 8 })])
   const products = featured.length ? featured : await getProducts({ sort: 'newest', limit: 8 })
-  const chatHref = whatsappLink('Hello Homebest, please help me choose a water filter.')
+  const chatHref = whatsappLink('Hello Homebest, please help me choose the right product.')
 
   return (
     <>
       <section className="hero">
-        <HeroSwoosh />
-        <div className="container">
-          <h1>{site.headline}</h1>
-          <p>{site.intro}</p>
-          <div className="hero-actions">
-            <Link href="/shop" className="btn btn-primary">
-              Shop now
-            </Link>
-            {chatHref ? (
-              <a href={chatHref} className="btn btn-light" target="_blank" rel="noopener noreferrer">
-                Ask us on WhatsApp
-              </a>
-            ) : null}
+        <div className="container hero-grid">
+          <div>
+            {site.eyebrow ? <span className="eyebrow">{site.eyebrow}</span> : null}
+            <h1>{site.headline}</h1>
+            <p>{site.intro}</p>
+            <div className="hero-actions">
+              <Link href="/shop" className="btn btn-pearl">
+                Shop now
+              </Link>
+              {chatHref ? (
+                <a href={chatHref} className="btn btn-light" target="_blank" rel="noopener noreferrer">
+                  Ask us on WhatsApp
+                </a>
+              ) : null}
+            </div>
           </div>
+          {site.heroImage ? (
+            <div className="hero-stage" aria-hidden="true">
+              <svg className="hero-rings" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="49.4" fill="none" stroke="rgba(255,255,255,.16)" strokeWidth=".22" />
+                <circle cx="50" cy="50" r="46.2" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth=".12" />
+                <path d="M 40 9.5 L 50 4.6 L 60 9.5" fill="none" stroke="#00aeef" strokeWidth=".5" />
+              </svg>
+              <div className="hero-floor" />
+              <div className="hero-product">
+                <Image src={site.heroImage} alt={site.heroImageAlt || ''} fill priority sizes="(min-width: 900px) 520px, 78vw" />
+              </div>
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -86,8 +101,8 @@ export default async function HomePage() {
         <div className="container">
           <div className="help-band">
             <div>
-              <h2>Not sure which water filter you need?</h2>
-              <p>Tap water, borehole water and rain water need different filters. Tell us where your water comes from and we will help you choose.</p>
+              <h2>Not sure which one is right for you?</h2>
+              <p>Tell us about your home or business. For water purifiers, tell us where your water comes from: tap, borehole or rain. We will help you choose.</p>
             </div>
             {chatHref ? (
               <a href={chatHref} className="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">

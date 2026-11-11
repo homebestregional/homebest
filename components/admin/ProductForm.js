@@ -20,6 +20,7 @@ const EMPTY = {
   features: '',
   warranty: '',
   images: [],
+  video_url: '',
   is_active: true,
   is_featured: false,
 }
@@ -222,6 +223,13 @@ export default function ProductForm({ productId }) {
                   <input ref={fileInput} type="file" accept="image/*" multiple className="visually-hidden" onChange={(e) => addPhotos(e.target.files)} />
                 </label>
               ) : null}
+            </div>
+            <div className="field" style={{ marginTop: 18 }}>
+              <label htmlFor="video_url">
+                Video (optional)
+                <span className="hint">Link to an .mp4 video, e.g. /videos/homebest-purifier.mp4. It shows with the photos.</span>
+              </label>
+              <input id="video_url" className="input" value={form.video_url} onChange={set('video_url')} placeholder="/videos/…mp4" />
             </div>
           </div>
         </div>

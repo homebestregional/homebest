@@ -39,12 +39,15 @@ create table if not exists public.products (
   stock integer not null default 0,
   track_stock boolean not null default true,
   images text[] not null default '{}',   -- first image is the main one
+  video_url text,                        -- optional product video (mp4)
   is_active boolean not null default true,
   is_featured boolean not null default false,
   sort_order integer not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- Added after launch; safe to re-run on an existing database.
+alter table public.products add column if not exists video_url text;
 create index if not exists products_category_idx on public.products (category_id);
 create index if not exists products_active_featured_idx on public.products (is_active, is_featured);
 

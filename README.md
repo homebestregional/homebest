@@ -74,7 +74,8 @@ Built with Next.js (plain JavaScript), Supabase (database, staff login, photo st
 ## Change the look
 
 - Colours: the `:root` block at the top of `app/globals.css` (taken from the Homebest logo: indigo `#2e3092`, cyan `#00aeef`).
-- Logo files: `public/brand/` (full logo, header wordmark, white wordmark for dark areas, sharing image).
+- Logo files: `public/brand/` (the Seal logo: compact for the header, white horizontal for dark areas, stacked, seal only, sharing image).
+- Product photos: `public/products/<slug>/`. Product videos: `public/videos/` (an .mp4 plus a .jpg poster with the same name).
 - Words on the home page: `lib/site.js`.
 
 ## Working on the code

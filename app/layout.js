@@ -1,4 +1,5 @@
 import '@fontsource-variable/archivo/wdth.css'
+import '@fontsource-variable/bodoni-moda/opsz.css'
 import './globals.css'
 import { site } from '@/lib/site'
 
@@ -7,7 +8,7 @@ const siteUrl = process.env.SITE_URL || 'http://localhost:3000'
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: site.name + ' | Water filters, kitchen and home appliances in Kenya',
+    default: site.name + ' | Water purifiers, home appliances and more in Kenya',
     template: '%s | ' + site.name,
   },
   description: site.description,
@@ -20,7 +21,7 @@ export const metadata = {
 }
 
 export const viewport = {
-  themeColor: '#1d1f66',
+  themeColor: '#0b0d2c',
 }
 
 export default function RootLayout({ children }) {
