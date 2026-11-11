@@ -3,6 +3,7 @@ import { site, whatsappLink } from '@/lib/site'
 import { getCategories, getProducts } from '@/lib/data'
 import { ProductGrid } from '@/components/ProductCard'
 import Image from 'next/image'
+import HeroVideo from '@/components/HeroVideo'
 
 export default async function HomePage() {
   const [categories, featured] = await Promise.all([getCategories(), getProducts({ featured: true, limit: 8 })])
@@ -11,6 +12,35 @@ export default async function HomePage() {
 
   return (
     <>
+      {site.heroVideo ? (
+        <section className="vhero">
+          <HeroVideo {...site.heroVideo} />
+          <div className="vhero-shade" aria-hidden="true" />
+          <div className="container vhero-copy">
+            {site.eyebrow ? <span className="vhero-eyebrow">{site.eyebrow}</span> : null}
+            <h1>
+              <span>{site.headline}</span>{' '}
+              {site.headlineOrange || site.headlineGreen ? (
+                <span>
+                  <span className="vhero-orange">{site.headlineOrange}</span>{' '}
+                  <span className="vhero-green">{site.headlineGreen}</span>
+                </span>
+              ) : null}
+            </h1>
+            <p>{site.heroLine || site.intro}</p>
+            <div className="hero-actions">
+              <Link href="/shop" className="btn btn-pearl">
+                Shop now
+              </Link>
+              {chatHref ? (
+                <a href={chatHref} className="btn btn-glass" target="_blank" rel="noopener noreferrer">
+                  Ask us on WhatsApp
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : (
       <section className="hero">
         <div className="container hero-grid">
           <div>
@@ -33,7 +63,7 @@ export default async function HomePage() {
               <svg className="hero-rings" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="49.4" fill="none" stroke="rgba(255,255,255,.16)" strokeWidth=".22" />
                 <circle cx="50" cy="50" r="46.2" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth=".12" />
-                <path d="M 40 9.5 L 50 4.6 L 60 9.5" fill="none" stroke="#00aeef" strokeWidth=".5" />
+                <path d="M 40 9.5 L 50 4.6 L 60 9.5" fill="none" stroke="#22b35e" strokeWidth=".5" />
               </svg>
               <div className="hero-floor" />
               <div className="hero-product">
@@ -43,6 +73,7 @@ export default async function HomePage() {
           ) : null}
         </div>
       </section>
+      )}
 
       {categories.length ? (
         <section className="needs" aria-label="Shop by category">
