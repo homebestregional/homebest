@@ -85,7 +85,7 @@ export default function AdminShell({ children }) {
         <header className="admin-bar">
           <div className="container admin-bar-row">
             <Link href="/admin" className="admin-brand">
-              <img src="/brand/homebest-logo-compact-white.svg" alt={site.name} />
+              <img src={site.logoWhite} alt={site.name} />
               <span>admin</span>
             </Link>
             <nav className="admin-nav" aria-label="Admin">
