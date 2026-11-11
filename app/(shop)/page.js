@@ -20,7 +20,12 @@ export default async function HomePage() {
             {site.eyebrow ? <span className="vhero-eyebrow">{site.eyebrow}</span> : null}
             <h1>
               <span>{site.headline}</span>{' '}
-              {site.headlineAccent ? <span className="vhero-accent">{site.headlineAccent}</span> : null}
+              {site.headlineOrange || site.headlineGreen ? (
+                <span>
+                  <span className="vhero-orange">{site.headlineOrange}</span>{' '}
+                  <span className="vhero-green">{site.headlineGreen}</span>
+                </span>
+              ) : null}
             </h1>
             <p>{site.heroLine || site.intro}</p>
             <div className="hero-actions">
@@ -58,7 +63,7 @@ export default async function HomePage() {
               <svg className="hero-rings" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="49.4" fill="none" stroke="rgba(255,255,255,.16)" strokeWidth=".22" />
                 <circle cx="50" cy="50" r="46.2" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth=".12" />
-                <path d="M 40 9.5 L 50 4.6 L 60 9.5" fill="none" stroke="#00aeef" strokeWidth=".5" />
+                <path d="M 40 9.5 L 50 4.6 L 60 9.5" fill="none" stroke="#22b35e" strokeWidth=".5" />
               </svg>
               <div className="hero-floor" />
               <div className="hero-product">

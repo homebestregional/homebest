@@ -2,14 +2,21 @@
    To use Homebest's own colours, change the values under :root only. */
 
 :root {
-  /* Homebest Regional Limited brand colours (the Seal logo).
-     Deep night indigo + silver, with logo cyan used only for small details. */
-  --brand: #2e3092;        /* logo indigo */
-  --brand-deep: #0b0d2c;   /* night indigo for big dark areas */
-  --brand-tint: #eef0f8;   /* very light indigo for backgrounds */
-  --accent: #00aeef;       /* logo cyan: thin lines, small marks, focus rings */
-  --accent-hover: #0098d4;
-  --accent-ink: #0d1240;   /* text on cyan */
+  /* Homebest Regional Limited brand colours.
+     Blue is the main colour (the Seal logo indigo): dark areas, headings, main buttons.
+     Green comes second: links, second buttons, thin lines.
+     Orange is a small highlight only: sale tags, the cart count, one word in the banner. */
+  --brand: #2e3092;        /* main blue (logo indigo) */
+  --brand-deep: #0b0d2c;   /* night blue for big dark areas */
+  --brand-tint: #eef0f8;   /* very light blue for backgrounds */
+  --green: #22b35e;        /* bright green: on dark areas, fills and thin lines */
+  --green-ink: #12793f;    /* deeper green: text, links and buttons on white */
+  --orange: #f7931e;       /* bright orange: small highlights */
+  --orange-ink: #b45309;   /* deeper orange: orange text on white */
+  --accent: var(--green);  /* thin lines and small marks */
+  --accent-hover: #1b9a50;
+  --accent-ink: #0d1240;   /* text on green or orange fills */
+  --focus: var(--green-ink); /* keyboard focus rings */
   --silver: #c9cdf2;       /* soft silver-lilac for text on dark */
 
   --ink: #10123a;
@@ -52,8 +59,8 @@ body {
 }
 
 img { max-width: 100%; display: block; }
-a { color: var(--brand); text-underline-offset: 3px; }
-a:hover { color: var(--brand-deep); }
+a { color: var(--green-ink); text-underline-offset: 3px; }
+a:hover { color: var(--brand); }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
@@ -63,6 +70,7 @@ h1, h2, h3, h4 {
   margin: 0 0 0.5em;
   color: var(--ink);
 }
+h1, h2 { color: var(--brand); }
 h3, h4 { letter-spacing: 0; }
 .admin .btn { text-transform: none; letter-spacing: 0; font-size: 1rem; }
 /* Small uppercase label above headings */
@@ -77,7 +85,7 @@ h3 { font-size: 1.2rem; }
 p { margin: 0 0 1em; }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -120,15 +128,15 @@ p { margin: 0 0 1em; }
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-.btn-primary { background: var(--ink); color: #fff; }
-.btn-primary:hover:not(:disabled) { background: var(--brand); color: #fff; box-shadow: 0 8px 24px rgba(46, 48, 146, 0.28); }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--brand-deep); color: #fff; box-shadow: 0 8px 24px rgba(46, 48, 146, 0.28); }
 /* On dark backgrounds the main button turns white */
 .btn-pearl { background: #fff; color: var(--ink); }
 .btn-pearl:hover { background: var(--silver); color: var(--ink); }
 .btn-dark { background: var(--brand); color: #fff; }
 .btn-dark:hover:not(:disabled) { background: var(--brand-deep); color: #fff; }
-.btn-outline { background: transparent; border-color: var(--line); color: var(--ink); }
-.btn-outline:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); }
+.btn-outline { background: transparent; border-color: rgba(18, 121, 63, 0.45); color: var(--green-ink); }
+.btn-outline:hover:not(:disabled) { background: var(--green-ink); border-color: var(--green-ink); color: #fff; }
 .btn-light { background: transparent; border-color: rgba(255,255,255,0.5); color: #fff; }
 .btn-light:hover { border-color: #fff; color: #fff; }
 .btn-whatsapp { background: #1f7a4d; color: #fff; }
@@ -188,7 +196,7 @@ p { margin: 0 0 1em; }
 .cart-count {
   position: absolute; top: 2px; right: 0;
   min-width: 20px; height: 20px; padding: 0 5px;
-  border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+  border-radius: 999px; background: var(--orange); color: var(--accent-ink);
   font-size: 0.75rem; font-weight: 700; line-height: 20px; text-align: center;
 }
 .mobile-menu {
@@ -303,7 +311,7 @@ p { margin: 0 0 1em; }
   font-family: var(--font-display); font-size: 0.76rem; font-weight: 600;
   letter-spacing: 0.28em; text-transform: uppercase; color: rgba(236, 238, 255, 0.82);
 }
-.vhero-eyebrow::before { content: ''; width: 28px; height: 1.5px; background: var(--accent); }
+.vhero-eyebrow::before { content: ''; width: 28px; height: 1.5px; background: var(--orange); }
 .vhero h1 {
   color: #fff;
   font-family: var(--font-display); font-weight: 700;
@@ -312,14 +320,10 @@ p { margin: 0 0 1em; }
   max-width: 10.5ch; margin: 0 0 22px;
   text-shadow: 0 2px 30px rgba(var(--vhero-night), 0.35);
 }
-.vhero h1 span { display: block; text-wrap: balance; }
-.vhero-accent { /* the second line takes Tembo's colours */
-  background: linear-gradient(92deg, #ffd36e 0%, #ff8ac9 30%, #b18cff 60%, #5fe3ff 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
-  text-shadow: none;
-  padding-bottom: 0.08em;
-}
+.vhero h1 > span { display: block; text-wrap: balance; }
+/* Second line: "Value" in orange, "you can feel." in green */
+.vhero-orange { color: var(--orange); }
+.vhero-green { color: var(--green); }
 .vhero p {
   font-size: 1.12rem; line-height: 1.6; max-width: 38ch;
   color: rgba(236, 238, 255, 0.88); margin-bottom: 30px;
@@ -399,7 +403,7 @@ p { margin: 0 0 1em; }
   transition: transform 0.25s, box-shadow 0.25s;
 }
 .need:hover { color: var(--ink); transform: translateY(-3px); box-shadow: 0 24px 50px rgba(11, 13, 44, 0.18); }
-.need:hover .need-go { color: var(--brand); text-decoration: underline; }
+.need:hover .need-go { color: var(--green-ink); text-decoration: underline; }
 .need h2 { font-size: 1.2rem; margin-bottom: 4px; }
 .need p { margin: 0 0 8px; color: var(--ink-soft); font-size: 0.95rem; }
 @media (min-width: 720px) {
@@ -407,7 +411,7 @@ p { margin: 0 0 1em; }
   .need h2 { font-size: 1.3rem; margin-bottom: 6px; }
   .need p { margin-bottom: 14px; font-size: 0.98rem; }
 }
-.need-go { font-family: var(--font-display); font-weight: 600; color: var(--ink); font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.need-go { font-family: var(--font-display); font-weight: 600; color: var(--green-ink); font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* Product grid and cards */
 .product-grid {
@@ -441,7 +445,7 @@ p { margin: 0 0 1em; }
   background: var(--paper); color: var(--ink);
   font-size: 0.78rem; font-weight: 700;
 }
-.tag-sale { background: var(--accent); color: var(--accent-ink); }
+.tag-sale { background: var(--orange); color: var(--accent-ink); }
 .tag-out { background: var(--ink); color: #fff; }
 .product-card-body { padding: 12px 2px 10px; flex: 1; }
 .product-card-brand { font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 2px; }
@@ -471,7 +475,7 @@ p { margin: 0 0 1em; }
 .size-option:hover { border-color: var(--brand); }
 .size-option.is-on { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink), 0 8px 22px rgba(11, 13, 44, 0.10); }
 .size-option input { position: absolute; opacity: 0; pointer-events: none; }
-.size-option:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+.size-option:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
 .size-label { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; line-height: 1.3; color: var(--ink); }
 .size-price { font-size: 0.9rem; color: var(--ink-soft); }
 .size-specs { margin: 0 0 18px; }
@@ -571,7 +575,7 @@ p { margin: 0 0 1em; }
 .product-price { font-size: 1.7rem; margin: 8px 0 6px; }
 .stock-note { font-weight: 600; font-size: 0.95rem; margin-bottom: 20px; }
 .stock-in { color: var(--success); }
-.stock-low { color: #9a5b00; }
+.stock-low { color: var(--orange-ink); }
 .stock-out { color: var(--danger); }
 .buy-row { display: flex; gap: 10px; align-items: stretch; margin-bottom: 12px; }
 .buy-row .btn { flex: 1; }
