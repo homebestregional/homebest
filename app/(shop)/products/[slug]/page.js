@@ -5,6 +5,8 @@ import { featuresList, formatKES, hasPrice } from '@/lib/format'
 import { site, whatsappLink } from '@/lib/site'
 import ProductGallery from '@/components/ProductGallery'
 import ProductBuy from '@/components/ProductBuy'
+import ProductOptions from '@/components/ProductOptions'
+import { lowestPrice, productOptions } from '@/lib/options'
 import { ProductGrid } from '@/components/ProductCard'
 
 // Pages are built the first time someone opens them, then kept for 5 minutes.
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }) {
     title: product.name,
     description:
       product.short_description ||
-      (hasPrice(product) ? `${product.name} for ${formatKES(product.price)}. Pay with M-Pesa or card.` : `${product.name} at Homebest.`),
+      (hasPrice(product) ? `${product.name} from ${formatKES(lowestPrice(product))}. Pay with M-Pesa or card.` : `${product.name} at Homebest.`),
     openGraph: { images: product.images?.[0] ? [product.images[0]] : [] },
   }
 }
@@ -44,6 +46,7 @@ export default async function ProductPage({ params }) {
   const stock = stockText(product)
   const onSale = product.compare_at_price && product.compare_at_price > product.price
   const priced = hasPrice(product)
+  const sizes = productOptions(product).filter((o) => o.price > 0)
   const askHref = whatsappLink(
     priced ? `Hello Homebest, I have a question about: ${product.name}` : `Hello Homebest, please tell me the price of: ${product.name}`
   )
@@ -56,7 +59,15 @@ export default async function ProductPage({ params }) {
     description: product.short_description || product.description || '',
     sku: product.sku || undefined,
     brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
-    offers: priced
+    offers: sizes.length
+      ? {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'KES',
+          lowPrice: Math.min(...sizes.map((o) => o.price)),
+          highPrice: Math.max(...sizes.map((o) => o.price)),
+          offerCount: sizes.length,
+        }
+      : priced
       ? {
           '@type': 'Offer',
           priceCurrency: 'KES',
@@ -89,7 +100,9 @@ export default async function ProductPage({ params }) {
           {product.brand ? <p className="muted" style={{ marginBottom: 6 }}>{product.brand}</p> : null}
           <h1>{product.name}</h1>
           {product.short_description ? <p className="muted">{product.short_description}</p> : null}
-          {priced ? (
+          {sizes.length ? (
+            <ProductOptions product={product} stock={stock} />
+          ) : priced ? (
             <>
               <div className="product-price price">
                 {formatKES(product.price)}

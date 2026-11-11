@@ -5,19 +5,22 @@ import { useEffect, useState } from 'react'
 import { useCart, MAX_QTY } from '@/components/CartProvider'
 import { formatKES } from '@/lib/format'
 import AddToCartButton from '@/components/AddToCartButton'
+import { cartKey, nameWithOption } from '@/lib/options'
 
-export default function ProductBuy({ product }) {
+// option: the chosen size, when the product has sizes
+export default function ProductBuy({ product, option = null }) {
   const { items } = useCart()
   const [qty, setQty] = useState(1)
   const outOfStock = product.track_stock && product.stock <= 0
   const maxQty = product.track_stock ? Math.min(MAX_QTY, Math.max(product.stock, 0)) : MAX_QTY
-  const inCart = items.find((i) => i.id === product.id)
+  const inCart = items.find((i) => i.key === cartKey(product.id, option?.id))
   const cartProduct = {
     id: product.id,
+    option: option?.id || null,
     slug: product.slug,
-    name: product.name,
-    price: product.price,
-    image: product.images?.[0] || '',
+    name: nameWithOption(product.name, option),
+    price: option ? option.price : product.price,
+    image: option?.image || product.images?.[0] || '',
     maxQty,
   }
 
@@ -53,7 +56,7 @@ export default function ProductBuy({ product }) {
       ) : null}
 
       <div className="mobile-buy-bar">
-        <span className="price">{formatKES(product.price)}</span>
+        <span className="price">{formatKES(cartProduct.price)}</span>
         {outOfStock ? (
           <button type="button" className="btn btn-outline" disabled>
             Out of stock

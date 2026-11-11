@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatKES, hasPrice } from '@/lib/format'
+import { lowestPrice, productOptions } from '@/lib/options'
 import { DropIcon } from '@/components/Icons'
 import AddToCartButton from '@/components/AddToCartButton'
 
@@ -20,6 +21,7 @@ export default function ProductCard({ product, priority }) {
   const outOfStock = product.track_stock && product.stock <= 0
   const onSale = product.compare_at_price && product.compare_at_price > product.price
   const maxQty = product.track_stock ? Math.max(product.stock, 0) : undefined
+  const sizes = productOptions(product)
 
   return (
     <article className="product-card">
@@ -32,7 +34,11 @@ export default function ProductCard({ product, priority }) {
           {product.brand ? <div className="product-card-brand">{product.brand}</div> : null}
           <h3 className="product-card-name">{product.name}</h3>
           <div>
-            {hasPrice(product) ? (
+            {sizes.length && hasPrice(product) ? (
+              <span className="price">
+                <span className="price-from">From</span> {formatKES(lowestPrice(product))}
+              </span>
+            ) : hasPrice(product) ? (
               <>
                 <span className="price">{formatKES(product.price)}</span>
                 {onSale ? <span className="price-old">{formatKES(product.compare_at_price)}</span> : null}
@@ -43,7 +49,11 @@ export default function ProductCard({ product, priority }) {
           </div>
         </div>
       </Link>
-      {hasPrice(product) ? (
+      {sizes.length && hasPrice(product) ? (
+        <Link href={'/products/' + product.slug} className="btn btn-outline btn-small btn-block">
+          Choose a size
+        </Link>
+      ) : hasPrice(product) ? (
         <AddToCartButton
           disabled={outOfStock}
           product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image, maxQty }}

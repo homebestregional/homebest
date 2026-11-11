@@ -56,7 +56,7 @@ export default function CheckoutPage() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, items: items.map((i) => ({ id: i.id, qty: i.qty })) }),
+        body: JSON.stringify({ ...form, items: items.map((i) => ({ id: i.id, option: i.option || null, qty: i.qty })) }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
@@ -197,7 +197,7 @@ export default function CheckoutPage() {
           <h2>Your order</h2>
           <ul className="summary-items">
             {items.map((i) => (
-              <li key={i.id}>
+              <li key={i.key}>
                 <span>
                   {i.name} × {i.qty}
                 </span>

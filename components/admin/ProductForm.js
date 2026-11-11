@@ -21,6 +21,7 @@ const EMPTY = {
   warranty: '',
   images: [],
   video_url: '',
+  options: [],
   is_active: true,
   is_featured: false,
 }
@@ -66,6 +67,7 @@ export default function ProductForm({ productId }) {
           compare_at_price: product.compare_at_price ? String(product.compare_at_price) : '',
           stock: String(product.stock),
           category_id: product.category_id || '',
+          options: Array.isArray(product.options) ? product.options : [],
         })
         setLoading(false)
       })
@@ -103,6 +105,18 @@ export default function ProductForm({ productId }) {
     if (fileInput.current) fileInput.current.value = ''
   }
 
+  // Sizes or models
+  const setOption = (i, field) => (e) => {
+    const value = e.target.value
+    setForm((f) => ({ ...f, options: f.options.map((o, n) => (n === i ? { ...o, [field]: value } : o)) }))
+  }
+  function addOption() {
+    setForm((f) => ({ ...f, options: [...f.options, { label: '', price: '', features: '', image: '' }] }))
+  }
+  function removeOption(i) {
+    setForm((f) => ({ ...f, options: f.options.filter((_, n) => n !== i) }))
+  }
+
   function moveToFront(url) {
     setForm((f) => ({ ...f, images: [url, ...f.images.filter((u) => u !== url)] }))
   }
@@ -116,7 +130,12 @@ export default function ProductForm({ productId }) {
     setError('')
     setFlash('')
     try {
-      const payload = { ...form, price: Number(form.price), stock: Number(form.stock) }
+      const payload = {
+        ...form,
+        price: Number(form.price),
+        stock: Number(form.stock),
+        options: form.options.map((o) => ({ ...o, price: Number(o.price) })),
+      }
       if (productId) {
         await adminFetch('/api/admin/products/' + productId, { method: 'PUT', body: JSON.stringify(payload) })
         setFlash('Saved. The shop is updated.')
@@ -232,14 +251,72 @@ export default function ProductForm({ productId }) {
               <input id="video_url" className="input" value={form.video_url} onChange={set('video_url')} placeholder="/videos/…mp4" />
             </div>
           </div>
+
+          <div className="panel">
+            <h2>Sizes or models (optional)</h2>
+            <p className="muted small">
+              Use this when one product comes in different sizes, like 1,000 L/h and 5,000 L/h. Each size has its own price,
+              specs and photo. Customers pick a size before they add it to the cart.
+            </p>
+            {form.options.map((o, i) => (
+              <div key={i} className="option-row">
+                <div className="form-grid">
+                  <div className="field">
+                    <label htmlFor={'opt-label-' + i}>Size name</label>
+                    <input id={'opt-label-' + i} className="input" value={o.label || ''} placeholder="e.g. 1,000 L/h with UV" onChange={setOption(i, 'label')} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor={'opt-price-' + i}>Price (KSh)</label>
+                    <input id={'opt-price-' + i} className="input" type="number" inputMode="numeric" min="0" step="1" value={o.price ?? ''} onChange={setOption(i, 'price')} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor={'opt-features-' + i}>
+                      Specs for this size
+                      <span className="hint">One per line.</span>
+                    </label>
+                    <textarea id={'opt-features-' + i} className="textarea" value={o.features || ''} onChange={setOption(i, 'features')} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor={'opt-image-' + i}>Photo for this size</label>
+                    <select id={'opt-image-' + i} value={o.image || ''} onChange={setOption(i, 'image')}>
+                      <option value="">Main photo</option>
+                      {form.images.map((url, n) => (
+                        <option key={url} value={url}>Photo {n + 1}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <button type="button" className="link-button" style={{ color: 'var(--danger)' }} onClick={() => removeOption(i)}>
+                  Remove this size
+                </button>
+              </div>
+            ))}
+            <button type="button" className="btn btn-outline btn-small" onClick={addOption}>
+              Add a size
+            </button>
+          </div>
         </div>
 
         <div>
           <div className="panel">
             <div className="form-grid">
               <div className="field">
-                <label htmlFor="price">Price (KSh)</label>
-                <input id="price" className="input" type="number" inputMode="numeric" min="0" step="1" value={form.price} onChange={set('price')} required />
+                <label htmlFor="price">
+                  Price (KSh)
+                  {form.options.length ? <span className="hint">Set by the sizes. The lowest size price is shown as “From”.</span> : null}
+                </label>
+                <input
+                  id="price"
+                  className="input"
+                  type="number"
+                  inputMode="numeric"
+                  min="0"
+                  step="1"
+                  value={form.price}
+                  onChange={set('price')}
+                  required={!form.options.length}
+                  disabled={form.options.length > 0}
+                />
               </div>
               <div className="field">
                 <label htmlFor="compare_at_price">

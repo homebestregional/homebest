@@ -54,7 +54,7 @@ export default function CartPage() {
       <div className="cart-layout">
         <ul className="cart-list">
           {items.map((item) => (
-            <li key={item.id} className="cart-item">
+            <li key={item.key} className="cart-item">
               <Link href={'/products/' + item.slug} className="cart-thumb" tabIndex={-1} aria-hidden="true">
                 {item.image ? (
                   <Image src={item.image} alt="" fill sizes="76px" />
@@ -74,20 +74,20 @@ export default function CartPage() {
                 <div className="muted small">{formatKES(item.price)} each</div>
                 <div className="cart-item-controls">
                   <div className="qty" role="group" aria-label={'Quantity of ' + item.name}>
-                    <button type="button" onClick={() => setQty(item.id, item.qty - 1)} aria-label="One less">
+                    <button type="button" onClick={() => setQty(item.key, item.qty - 1)} aria-label="One less">
                       −
                     </button>
                     <span>{item.qty}</span>
                     <button
                       type="button"
-                      onClick={() => setQty(item.id, item.qty + 1)}
+                      onClick={() => setQty(item.key, item.qty + 1)}
                       disabled={item.qty >= (item.maxQty || 20)}
                       aria-label="One more"
                     >
                       +
                     </button>
                   </div>
-                  <button type="button" className="icon-button" onClick={() => removeItem(item.id)}>
+                  <button type="button" className="icon-button" onClick={() => removeItem(item.key)}>
                     <TrashIcon size={18} />
                     <span className="small">Remove</span>
                   </button>

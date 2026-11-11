@@ -40,6 +40,7 @@ create table if not exists public.products (
   track_stock boolean not null default true,
   images text[] not null default '{}',   -- first image is the main one
   video_url text,                        -- optional product video (mp4)
+  options jsonb not null default '[]'::jsonb, -- optional sizes/models: [{id, label, price, features, image}]
   is_active boolean not null default true,
   is_featured boolean not null default false,
   sort_order integer not null default 0,
@@ -48,6 +49,7 @@ create table if not exists public.products (
 );
 -- Added after launch; safe to re-run on an existing database.
 alter table public.products add column if not exists video_url text;
+alter table public.products add column if not exists options jsonb not null default '[]'::jsonb;
 create index if not exists products_category_idx on public.products (category_id);
 create index if not exists products_active_featured_idx on public.products (is_active, is_featured);
 
@@ -143,11 +145,14 @@ begin
     return false;
   end if;
 
+  -- Add up the lines first: one product can be in an order more than once (different sizes)
   update public.products p
-     set stock = greatest(p.stock - oi.quantity, 0)
-    from public.order_items oi
-   where oi.order_id = p_order_id
-     and oi.product_id = p.id
+     set stock = greatest(p.stock - oi.qty, 0)
+    from (select product_id, sum(quantity) as qty
+            from public.order_items
+           where order_id = p_order_id and product_id is not null
+           group by product_id) oi
+   where oi.product_id = p.id
      and p.track_stock;
   return true;
 end;

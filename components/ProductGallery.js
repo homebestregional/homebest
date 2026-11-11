@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DropIcon } from '@/components/Icons'
 
 // A video kept in /public/videos can have a poster picture with the same name, ending in .jpg
@@ -17,6 +17,16 @@ export default function ProductGallery({ images = [], name, video = '' }) {
   const [active, setActive] = useState(0)
   const [played, setPlayed] = useState(false)
   const main = items[active] || items[0]
+
+  // The size picker asks the gallery to show that size's photo
+  useEffect(() => {
+    const show = (e) => {
+      const i = items.findIndex((item) => item.type === 'image' && item.src === e.detail)
+      if (i >= 0) setActive(i)
+    }
+    window.addEventListener('hb:show-image', show)
+    return () => window.removeEventListener('hb:show-image', show)
+  }, [items])
 
   return (
     <div>

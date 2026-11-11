@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { cartKey } from '@/lib/options'
 
 // The cart lives in the shopper's browser (localStorage).
 // Prices here are only for display: the server checks every price again at checkout.
@@ -13,7 +14,10 @@ function readCart() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed.filter((i) => i && i.id && i.qty > 0) : []
+    // Each line has a key: the product id, plus the size id when the product has sizes
+    return Array.isArray(parsed)
+      ? parsed.filter((i) => i && i.id && i.qty > 0).map((i) => ({ ...i, key: i.key || cartKey(i.id, i.option) }))
+      : []
   } catch {
     return []
   }
@@ -51,16 +55,19 @@ export function CartProvider({ children }) {
     (product, qty = 1) => {
       save((current) => {
         const limit = Math.min(MAX_QTY, product.maxQty || MAX_QTY)
-        const found = current.find((i) => i.id === product.id)
+        const key = cartKey(product.id, product.option)
+        const found = current.find((i) => i.key === key)
         if (found) {
           return current.map((i) =>
-            i.id === product.id ? { ...i, qty: Math.min(limit, i.qty + qty), maxQty: product.maxQty } : i
+            i.key === key ? { ...i, qty: Math.min(limit, i.qty + qty), maxQty: product.maxQty } : i
           )
         }
         return [
           ...current,
           {
+            key,
             id: product.id,
+            option: product.option || null,
             slug: product.slug,
             name: product.name,
             price: product.price,
@@ -75,17 +82,17 @@ export function CartProvider({ children }) {
   )
 
   const setQty = useCallback(
-    (id, qty) => {
+    (key, qty) => {
       save((current) =>
         current
-          .map((i) => (i.id === id ? { ...i, qty: Math.max(0, Math.min(i.maxQty || MAX_QTY, qty)) } : i))
+          .map((i) => (i.key === key ? { ...i, qty: Math.max(0, Math.min(i.maxQty || MAX_QTY, qty)) } : i))
           .filter((i) => i.qty > 0)
       )
     },
     [save]
   )
 
-  const removeItem = useCallback((id) => save((current) => current.filter((i) => i.id !== id)), [save])
+  const removeItem = useCallback((key) => save((current) => current.filter((i) => i.key !== key)), [save])
   const clear = useCallback(() => save([]), [save])
 
   // Replace names, prices and stock limits with fresh values from the server.
@@ -94,7 +101,7 @@ export function CartProvider({ children }) {
       save((current) =>
         current
           .map((i) => {
-            const f = fresh.find((p) => p.id === i.id)
+            const f = fresh.find((p) => (p.key || p.id) === i.key)
             if (!f) return i
             if (!f.available) return null
             const maxQty = f.maxQty || MAX_QTY

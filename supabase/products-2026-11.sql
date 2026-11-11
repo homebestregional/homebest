@@ -1,5 +1,6 @@
 -- Homebest's first real products (November 2026). Safe to run more than once.
 -- Run AFTER schema.sql (it needs the video_url column).
+-- Then run products-merge-purifiers.sql: it turns the three purifiers below into one product with three sizes.
 -- Photos and videos are files in /public, so they work without Supabase Storage.
 -- Prices are in KSh and include VAT.
 

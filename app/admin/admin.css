@@ -82,3 +82,5 @@
 .row-form + .row-form { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
 .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--brand-deep); }
 .login-card { background: var(--paper); border-radius: var(--radius-lg); padding: 32px; width: 100%; max-width: 400px; }
+.option-row { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; margin: 0 0 12px; background: var(--bg-soft); }
+.option-row .form-grid { margin-bottom: 8px; }

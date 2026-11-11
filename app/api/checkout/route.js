@@ -3,6 +3,7 @@ import { getIpnId, getToken, isPesapalConfigured, submitOrder } from '@/lib/pesa
 import { newOrderReference } from '@/lib/orders'
 import { normaliseKenyanPhone, phoneToLocal } from '@/lib/format'
 import { site } from '@/lib/site'
+import { cartKey, findOption, nameWithOption, productOptions } from '@/lib/options'
 
 const MAX_QTY = 20
 
@@ -39,31 +40,45 @@ export async function POST(request) {
   if (Object.keys(errors).length) return fail('Please fix the details marked in red.', 400, { fields: errors })
 
   // 2. Check the items
+  // One entry per product and size (a product can have sizes, like "1,000 L/h with UV")
   const wanted = new Map()
   for (const item of Array.isArray(body.items) ? body.items.slice(0, 50) : []) {
     const qty = Math.floor(Number(item?.qty))
     if (typeof item?.id !== 'string' || !(qty > 0)) continue
-    wanted.set(item.id, Math.min(MAX_QTY, (wanted.get(item.id) || 0) + qty))
+    const option = typeof item.option === 'string' && item.option ? item.option : null
+    const key = cartKey(item.id, option)
+    const prev = wanted.get(key)
+    wanted.set(key, { id: item.id, option, qty: Math.min(MAX_QTY, (prev?.qty || 0) + qty) })
   }
   if (!wanted.size) return fail('Your cart is empty.')
 
   const { data: products, error: productError } = await supabase
     .from('products')
-    .select('id, name, price, stock, track_stock, is_active')
-    .in('id', [...wanted.keys()])
+    .select('id, name, price, options, stock, track_stock, is_active')
+    .in('id', [...new Set([...wanted.values()].map((w) => w.id))])
   if (productError) return fail('We could not check your cart. Please try again.', 500)
 
   const lines = []
-  for (const [id, qty] of wanted) {
+  const perProduct = new Map() // stock is counted per product, across its sizes
+  for (const { id, option, qty } of wanted.values()) {
     const p = products.find((x) => x.id === id)
-    if (!p || !p.is_active || !(p.price > 0)) return fail('Something in your cart is no longer for sale. Please check your cart.', 409)
-    if (p.track_stock && p.stock < qty) {
+    const notForSale = () => fail('Something in your cart is no longer for sale. Please check your cart.', 409)
+    if (!p || !p.is_active) return notForSale()
+    const hasOptions = productOptions(p).length > 0
+    const chosen = findOption(p, option)
+    if (hasOptions ? !chosen : option) return notForSale()
+    const unitPrice = chosen ? Math.round(Number(chosen.price)) : p.price
+    if (!(unitPrice > 0)) return notForSale()
+
+    const total = (perProduct.get(id) || 0) + qty
+    perProduct.set(id, total)
+    if (p.track_stock && p.stock < total) {
       return fail(
         p.stock > 0 ? `We only have ${p.stock} of ${p.name} left. Please change the quantity.` : `${p.name} just sold out. Please take it out of your cart.`,
         409
       )
     }
-    lines.push({ product_id: p.id, product_name: p.name, unit_price: p.price, quantity: qty, line_total: p.price * qty })
+    lines.push({ product_id: p.id, product_name: nameWithOption(p.name, chosen), unit_price: unitPrice, quantity: qty, line_total: unitPrice * qty })
   }
 
   const { data: zone } = await supabase

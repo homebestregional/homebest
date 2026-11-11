@@ -14,17 +14,16 @@ export function useQuote() {
   useEffect(() => {
     if (!ready || done.current) return
     done.current = true
-    const ids = items.map((i) => i.id)
     fetch('/api/quote', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ids }),
+      body: JSON.stringify({ items: items.map((i) => ({ id: i.id, option: i.option || null })) }),
     })
       .then((r) => r.json())
       .then((data) => {
         const notes = []
         for (const item of items) {
-          const fresh = data.products?.find((p) => p.id === item.id)
+          const fresh = data.products?.find((p) => p.key === item.key)
           if (!fresh) continue
           if (!fresh.available) notes.push(`${item.name} is sold out and was taken out of your cart.`)
           else if (fresh.price !== item.price) notes.push(`The price of ${fresh.name} is now ${fresh.price.toLocaleString('en-KE')} shillings.`)
