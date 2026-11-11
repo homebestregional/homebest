@@ -17,7 +17,8 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - `app/api/admin/*` — admin API, every route starts with `requireAdmin(request)`
 - `lib/site.js` — business details and home page words (contact details still TODO)
 - `lib/pesapal.js` — Pesapal API 3.0 client (sandbox/live by `PESAPAL_ENV`)
-- `supabase/schema.sql`, `supabase/seed.sql` — database (safe to re-run)
+- `lib/options.js` — product sizes/models (`products.options` JSON: id, label, price, features, image). Cart lines are keyed `productId|sizeId`; checkout reads each size price from the DB
+- `supabase/schema.sql`, `supabase/seed.sql` — database (safe to re-run). Real products: `products-2026-11.sql`, then `products-merge-purifiers.sql`
 - `public/brand/` — the Seal logo (compact for the header, horizontal white for dark areas, stacked, seal only) and the share image
 - `public/products/<slug>/` — product photos (main.webp is a see-through cut-out, card.webp is the branded picture)
 - `public/videos/` — product videos (web size) with a same-name .jpg poster
