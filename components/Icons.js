@@ -20,6 +20,15 @@ function Svg({ size = 22, children, ...props }) {
   )
 }
 
+export function SearchIcon(props) {
+  return (
+    <Svg {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.8-3.8" />
+    </Svg>
+  )
+}
+
 export function CartIcon(props) {
   return (
     <Svg {...props}>

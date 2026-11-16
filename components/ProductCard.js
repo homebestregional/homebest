@@ -16,10 +16,13 @@ export function ProductImage({ src, alt, sizes, priority }) {
   return <Image src={src} alt={alt} fill sizes={sizes} priority={priority} />
 }
 
+// Alibaba-style card: picture, two-line name, big bold price with the
+// old price and saving next to it, then one quiet action button.
 export default function ProductCard({ product, priority }) {
   const image = product.images?.[0] || ''
   const outOfStock = product.track_stock && product.stock <= 0
   const onSale = product.compare_at_price && product.compare_at_price > product.price
+  const percentOff = onSale ? Math.round((1 - product.price / product.compare_at_price) * 100) : 0
   const maxQty = product.track_stock ? Math.max(product.stock, 0) : undefined
   const sizes = productOptions(product)
 
@@ -27,13 +30,12 @@ export default function ProductCard({ product, priority }) {
     <article className="product-card">
       <Link href={'/products/' + product.slug} className="product-card-link">
         <div className="product-image">
-          {outOfStock ? <span className="tag tag-out">Sold out</span> : onSale ? <span className="tag tag-sale">Offer</span> : null}
+          {outOfStock ? <span className="tag tag-out">Sold out</span> : null}
           <ProductImage src={image} alt={product.name} sizes="(min-width: 1040px) 25vw, (min-width: 720px) 33vw, 50vw" priority={priority} />
         </div>
         <div className="product-card-body">
-          {product.brand ? <div className="product-card-brand">{product.brand}</div> : null}
           <h3 className="product-card-name">{product.name}</h3>
-          <div>
+          <div className="product-card-price">
             {sizes.length && hasPrice(product) ? (
               <span className="price">
                 <span className="price-from">From</span> {formatKES(lowestPrice(product))}
@@ -41,28 +43,36 @@ export default function ProductCard({ product, priority }) {
             ) : hasPrice(product) ? (
               <>
                 <span className="price">{formatKES(product.price)}</span>
-                {onSale ? <span className="price-old">{formatKES(product.compare_at_price)}</span> : null}
+                {onSale ? (
+                  <>
+                    <span className="price-old">{formatKES(product.compare_at_price)}</span>
+                    {percentOff >= 5 ? <span className="price-off">-{percentOff}%</span> : null}
+                  </>
+                ) : null}
               </>
             ) : (
               <span className="price price-ask">Price on request</span>
             )}
           </div>
+          {product.brand ? <div className="product-card-brand">{product.brand}</div> : null}
         </div>
       </Link>
-      {sizes.length && hasPrice(product) ? (
-        <Link href={'/products/' + product.slug} className="btn btn-outline btn-small btn-block">
-          Choose a size
-        </Link>
-      ) : hasPrice(product) ? (
-        <AddToCartButton
-          disabled={outOfStock}
-          product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image, maxQty }}
-        />
-      ) : (
-        <Link href={'/products/' + product.slug} className="btn btn-outline btn-small btn-block">
-          Ask for the price
-        </Link>
-      )}
+      <div className="product-card-action">
+        {sizes.length && hasPrice(product) ? (
+          <Link href={'/products/' + product.slug} className="btn btn-outline btn-small btn-block">
+            Choose a size
+          </Link>
+        ) : hasPrice(product) ? (
+          <AddToCartButton
+            disabled={outOfStock}
+            product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image, maxQty }}
+          />
+        ) : (
+          <Link href={'/products/' + product.slug} className="btn btn-outline btn-small btn-block">
+            Ask for the price
+          </Link>
+        )}
+      </div>
     </article>
   )
 }
