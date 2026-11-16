@@ -51,37 +51,65 @@ export default async function ProductPage({ params }) {
     priced ? `Hello Homebest, I have a question about: ${product.name}` : `Hello Homebest, please tell me the price of: ${product.name}`
   )
 
+  // Google needs full web addresses in structured data, not /products/... paths.
+  const base = (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, '')
+  const toAbsolute = (path) => (String(path || '').startsWith('http') ? path : base + path)
+  const productUrl = base + '/products/' + product.slug
+  const availability =
+    product.track_stock && product.stock <= 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock'
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    image: product.images || [],
+    url: productUrl,
+    image: (product.images || []).map(toAbsolute),
     description: product.short_description || product.description || '',
     sku: product.sku || undefined,
     brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
     offers: sizes.length
       ? {
           '@type': 'AggregateOffer',
+          url: productUrl,
           priceCurrency: 'KES',
           lowPrice: Math.min(...sizes.map((o) => o.price)),
           highPrice: Math.max(...sizes.map((o) => o.price)),
           offerCount: sizes.length,
+          availability,
+          seller: { '@type': 'Organization', name: site.legalName },
         }
       : priced
       ? {
           '@type': 'Offer',
+          url: productUrl,
           priceCurrency: 'KES',
           price: product.price,
-          availability:
-            product.track_stock && product.stock <= 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+          availability,
           seller: { '@type': 'Organization', name: site.legalName },
         }
       : undefined,
   }
 
+  // Shows the Shop / Category / Product trail in search results.
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Shop', item: base + '/shop' },
+      ...(product.categories
+        ? [{ '@type': 'ListItem', position: 2, name: product.categories.name, item: base + '/category/' + product.categories.slug }]
+        : []),
+      { '@type': 'ListItem', position: product.categories ? 3 : 2, name: product.name, item: productUrl },
+    ],
+  }
+
   return (
     <div className="container">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c') }}
+      />
       <div className="product-layout">
         <div>
           <div className="crumbs">

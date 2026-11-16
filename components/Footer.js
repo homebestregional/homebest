@@ -32,6 +32,9 @@ export default function Footer({ categories = [] }) {
             <h2>Help</h2>
             <ul>
               <li>
+                <Link href="/guides">Buying guides</Link>
+              </li>
+              <li>
                 <Link href="/delivery-returns">Delivery and returns</Link>
               </li>
               <li>
