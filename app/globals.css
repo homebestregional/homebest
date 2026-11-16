@@ -475,16 +475,13 @@ p { margin: 0 0 1em; }
   border-bottom: 1px solid var(--bg-soft);
   overflow: hidden;
 }
-.product-image img { object-fit: contain; padding: 6%; transition: transform 0.5s cubic-bezier(.2,.7,.2,1); }
+.product-image img { object-fit: contain; padding: 3%; transition: transform 0.5s cubic-bezier(.2,.7,.2,1); }
 .product-card-link:hover .product-image img { transform: scale(1.05); }
 .product-image .placeholder {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   color: var(--brand); opacity: 0.35;
 }
-/* Branded card pictures (deep navy) fill the whole square */
-.product-image.is-branded { background: var(--brand-deep); border-bottom: 0; }
-.product-image.is-branded img { object-fit: cover; padding: 0; }
 .tag {
   position: absolute; top: 10px; left: 10px; z-index: 1;
   padding: 3px 9px; border-radius: 999px;

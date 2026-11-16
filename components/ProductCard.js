@@ -19,12 +19,8 @@ export function ProductImage({ src, alt, sizes, priority }) {
 // Alibaba-style card: picture, two-line name, big bold price with the
 // old price and saving next to it, then one quiet action button.
 export default function ProductCard({ product, priority }) {
-  // In the grid we prefer the branded card picture (deep navy, colourful).
-  // The plain cut-out (main.webp) is the fallback, and the cart keeps using it.
-  const images = Array.isArray(product.images) ? product.images : []
-  const brandedImage = images.find((s) => typeof s === 'string' && s.includes('/card.'))
-  const cardImage = brandedImage || images[0] || ''
-  const image = images[0] || ''
+  // The grid shows each product's first picture — the supplier's original photo.
+  const image = product.images?.[0] || ''
   const outOfStock = product.track_stock && product.stock <= 0
   const onSale = product.compare_at_price && product.compare_at_price > product.price
   const percentOff = onSale ? Math.round((1 - product.price / product.compare_at_price) * 100) : 0
@@ -34,9 +30,9 @@ export default function ProductCard({ product, priority }) {
   return (
     <article className="product-card">
       <Link href={'/products/' + product.slug} className="product-card-link">
-        <div className={brandedImage ? 'product-image is-branded' : 'product-image'}>
+        <div className="product-image">
           {outOfStock ? <span className="tag tag-out">Sold out</span> : null}
-          <ProductImage src={cardImage} alt={product.name} sizes="(min-width: 1040px) 25vw, (min-width: 720px) 33vw, 50vw" priority={priority} />
+          <ProductImage src={image} alt={product.name} sizes="(min-width: 1040px) 25vw, (min-width: 720px) 33vw, 50vw" priority={priority} />
         </div>
         <div className="product-card-body">
           <h3 className="product-card-name">{product.name}</h3>
