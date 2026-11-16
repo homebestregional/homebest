@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { site } from '@/lib/site'
 import { useCart } from '@/components/CartProvider'
-import { CartIcon, CloseIcon, MenuIcon, SearchIcon } from '@/components/Icons'
+import { CartIcon, CloseIcon, MenuIcon, SearchIcon, UserIcon } from '@/components/Icons'
 
 function SearchBar({ idPrefix }) {
   return (
@@ -39,6 +39,9 @@ export default function Header({ categories = [] }) {
         <SearchBar idPrefix="header" />
 
         <div className="header-actions">
+          <Link href="/account" className="icon-button" aria-label="My account">
+            <UserIcon />
+          </Link>
           <Link href="/cart" className="icon-button" aria-label={`Cart, ${ready ? count : 0} items`}>
             <CartIcon />
             {ready && count > 0 ? <span className="cart-count">{count}</span> : null}
@@ -86,6 +89,7 @@ export default function Header({ categories = [] }) {
                 {c.name}
               </Link>
             ))}
+            <Link href="/account">My account</Link>
             <Link href="/delivery-returns">Delivery and returns</Link>
             <Link href="/contact">Contact us</Link>
           </div>

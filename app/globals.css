@@ -187,10 +187,10 @@ p { margin: 0 0 1em; }
 .search-btn {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 0 22px; border: 0; cursor: pointer;
-  background: var(--brand); color: #fff;
-  font-family: var(--font-display); font-weight: 600; font-size: 0.88rem;
+  background: var(--orange); color: var(--accent-ink);
+  font-family: var(--font-display); font-weight: 700; font-size: 0.88rem;
 }
-.search-btn:hover { background: var(--brand-deep); }
+.search-btn:hover { background: #e07f08; }
 /* Phones: the search bar moves to its own row under the logo */
 .header-row .header-search { display: none; }
 .header-search-row { padding: 0 var(--gutter) 10px; }
@@ -502,6 +502,9 @@ p { margin: 0 0 1em; }
 }
 .product-card-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .product-card-action { padding: 8px 12px 12px; }
+/* Green "go" buttons on product cards, like M-Pesa green */
+.product-card-action .btn-primary { background: var(--green-ink); }
+.product-card-action .btn-primary:hover:not(:disabled) { background: #0d5c30; box-shadow: 0 8px 22px rgba(18, 121, 63, 0.3); }
 .price { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; white-space: nowrap; color: var(--brand); }
 .price-ask { color: var(--ink-soft); font-weight: 500; font-size: 0.95rem; }
 .price-from { font-weight: 500; color: var(--ink-soft); font-size: 0.8em; margin-right: 2px; }
@@ -595,6 +598,10 @@ p { margin: 0 0 1em; }
   letter-spacing: -0.02em; margin: 0 0 6px;
 }
 .shop-hero p { margin: 0; font-size: 1rem; color: rgba(236, 238, 255, 0.9); max-width: 46ch; }
+.shop-hero::after { /* colour bar: orange to green, a little life under the banner */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--orange) 35%, var(--green) 65%, var(--green) 100%);
+}
 @media (max-width: 719px) {
   .shop-hero { min-height: 140px; padding: 20px; background-position: 80% center; }
   .shop-hero::before {
@@ -643,8 +650,8 @@ p { margin: 0 0 1em; }
   border: 1.5px solid var(--line); border-radius: 999px;
   color: var(--ink); text-decoration: none; font-weight: 600; font-size: 0.92rem;
 }
-.chip:hover { border-color: var(--brand); color: var(--brand); }
-.chip[aria-current='page'] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.chip:hover { border-color: var(--green-ink); color: var(--green-ink); }
+.chip[aria-current='page'] { background: var(--green-ink); border-color: var(--green-ink); color: #fff; }
 .select {
   height: 40px; padding: 0 12px; border: 1.5px solid var(--line); border-radius: var(--radius);
   font: inherit; font-size: 0.95rem; background: #fff; color: var(--ink);

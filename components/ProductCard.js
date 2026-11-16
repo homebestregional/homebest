@@ -70,6 +70,7 @@ export default function ProductCard({ product, priority }) {
         ) : hasPrice(product) ? (
           <AddToCartButton
             disabled={outOfStock}
+            className="btn btn-primary btn-small btn-block"
             product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image, maxQty }}
           />
         ) : (
