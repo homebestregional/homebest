@@ -502,6 +502,20 @@ p { margin: 0 0 1em; }
 /* Green "go" buttons on product cards, like M-Pesa green */
 .product-card-action .btn-primary { background: var(--green-ink); }
 .product-card-action .btn-primary:hover:not(:disabled) { background: #0d5c30; box-shadow: 0 8px 22px rgba(18, 121, 63, 0.3); }
+/* Card buttons must fit the card: let the words wrap, never spill out */
+.product-card-action .btn {
+  white-space: normal; text-align: center; line-height: 1.25;
+  padding: 6px 10px; letter-spacing: 0.05em;
+}
+@media (max-width: 719px) {
+  .product-card-action .btn { font-size: 0.78rem; min-height: 40px; }
+  .product-card-body { padding: 8px 10px 2px; }
+  .product-card-action { padding: 6px 10px 10px; }
+  .price { font-size: 1rem; }
+  .price-old { font-size: 0.82rem; margin-left: 4px; }
+  .price-off { font-size: 0.72rem; padding: 1px 5px; }
+  .product-card-name { font-size: 0.88rem; }
+}
 .price { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; white-space: nowrap; color: var(--brand); }
 .price-ask { color: var(--ink-soft); font-weight: 500; font-size: 0.95rem; }
 .price-from { font-weight: 500; color: var(--ink-soft); font-size: 0.8em; margin-right: 2px; }

@@ -108,26 +108,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section section-soft">
-        <div className="container">
-          <h2>How buying works</h2>
-          <ol className="steps">
-            <li>
-              <h3>Pick what you need</h3>
-              <p>Add items to your cart. You can see the full price, with delivery, before you pay.</p>
-            </li>
-            <li>
-              <h3>Pay safely</h3>
-              <p>Pay with M‑Pesa, Airtel Money or card on Pesapal. We never see your PIN or card number.</p>
-            </li>
-            <li>
-              <h3>Get it at home</h3>
-              <p>We call you to agree on a time, then bring your order to you. You can also pick it up.</p>
-            </li>
-          </ol>
-        </div>
-      </section>
-
       <section className="section">
         <div className="container">
           <div className="help-band">
