@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { site } from '@/lib/site'
 import { ProductGrid } from '@/components/ProductCard'
 import SortSelect from '@/components/SortSelect'
 
@@ -13,6 +14,21 @@ export default function ShopListing({ title, intro, categories, activeSlug, prod
           <Link href="/">Home</Link> / {activeSlug ? <Link href="/shop">Shop</Link> : 'Shop'}
           {activeSlug ? ' / ' + title : ''}
         </div>
+
+        {/* Small banner with Tembo the elephant, like a mini home hero */}
+        <section className="shop-hero">
+          <div className="shop-hero-text">
+            <h1>{search ? `Results for “${search}”` : title}</h1>
+            <p>
+              {intro || (
+                <>
+                  {site.headline} <span className="vhero-orange">{site.headlineOrange}</span>{' '}
+                  <span className="vhero-green">{site.headlineGreen}</span>
+                </>
+              )}
+            </p>
+          </div>
+        </section>
 
         {/* Phones: categories as a scrolling row of chips */}
         <nav className="chips" aria-label="Categories">
@@ -59,13 +75,6 @@ export default function ShopListing({ title, intro, categories, activeSlug, prod
           </aside>
 
           <div className="shop-main">
-            <div className="shop-main-head">
-              <div>
-                <h1>{search ? `Results for “${search}”` : title}</h1>
-                {intro ? <p className="muted small shop-intro">{intro}</p> : null}
-              </div>
-            </div>
-
             <div className="shop-toolbar">
               <p className="muted small toolbar-count">
                 {products.length} {products.length === 1 ? 'product' : 'products'}

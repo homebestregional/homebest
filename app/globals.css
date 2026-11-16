@@ -204,18 +204,18 @@ p { margin: 0 0 1em; }
   .header-search-row .search-btn { padding: 0 16px; }
 }
 
-/* Category strip under the search bar */
-.header-cats { display: none; border-top: 1px solid var(--line); }
+/* Category strip under the search bar: navy, like the brand cards */
+.header-cats { display: none; background: var(--brand-deep); }
 .header-cats-row {
   display: flex; align-items: center; gap: 22px;
   min-height: 42px; white-space: nowrap; overflow-x: auto;
 }
 .header-cats a {
-  color: var(--ink); text-decoration: none;
+  color: rgba(236, 238, 255, 0.92); text-decoration: none;
   font-size: 0.9rem; font-weight: 500; padding: 9px 0;
   border-bottom: 2px solid transparent;
 }
-.header-cats a:hover { color: var(--brand); border-bottom-color: var(--accent); }
+.header-cats a:hover { color: #fff; border-bottom-color: var(--green); }
 .cat-all {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-display); font-weight: 600 !important;
@@ -464,7 +464,7 @@ p { margin: 0 0 1em; }
   overflow: hidden;
   transition: box-shadow 0.2s, border-color 0.2s;
 }
-.product-card:hover { border-color: #c9cbdd; box-shadow: 0 10px 28px rgba(11, 13, 44, 0.12); }
+.product-card:hover { border-color: var(--green); box-shadow: 0 10px 28px rgba(11, 13, 44, 0.14); }
 .product-card-link { color: inherit; text-decoration: none; display: flex; flex-direction: column; flex: 1; }
 .product-card-link:hover { color: inherit; }
 .product-card-link:hover .product-card-name { color: var(--brand); }
@@ -482,6 +482,9 @@ p { margin: 0 0 1em; }
   display: flex; align-items: center; justify-content: center;
   color: var(--brand); opacity: 0.35;
 }
+/* Branded card pictures (deep navy) fill the whole square */
+.product-image.is-branded { background: var(--brand-deep); border-bottom: 0; }
+.product-image.is-branded img { object-fit: cover; padding: 0; }
 .tag {
   position: absolute; top: 10px; left: 10px; z-index: 1;
   padding: 3px 9px; border-radius: 999px;
@@ -499,7 +502,7 @@ p { margin: 0 0 1em; }
 }
 .product-card-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .product-card-action { padding: 8px 12px 12px; }
-.price { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; white-space: nowrap; color: var(--ink); }
+.price { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; white-space: nowrap; color: var(--brand); }
 .price-ask { color: var(--ink-soft); font-weight: 500; font-size: 0.95rem; }
 .price-from { font-weight: 500; color: var(--ink-soft); font-size: 0.8em; margin-right: 2px; }
 .price-off {
@@ -568,9 +571,37 @@ p { margin: 0 0 1em; }
 .page-head h1 { margin-bottom: 8px; }
 .crumbs { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 12px; }
 .crumbs a { color: var(--ink-soft); }
-/* Shop listing: soft grey page, white sidebar and cards (Alibaba style) */
-.shop-page { background: var(--bg-soft); padding: 18px 0 56px; }
+/* Shop listing: light blue page, white sidebar and cards (Alibaba style) */
+.shop-page { background: var(--brand-tint); padding: 18px 0 56px; }
 .shop-page .crumbs { margin-bottom: 14px; }
+
+/* Small banner with Tembo the elephant on the shop pages */
+.shop-hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: flex; align-items: center;
+  min-height: 180px;
+  margin-bottom: 16px; padding: 26px 30px;
+  border-radius: var(--radius-lg);
+  color: #fff;
+  background: url('/videos/tembo-hero-wide.jpg') right center / cover no-repeat, #0b0d2c;
+  box-shadow: 0 16px 36px rgba(11, 13, 44, 0.22);
+}
+.shop-hero::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(4, 10, 34, 0.92) 0%, rgba(4, 10, 34, 0.6) 45%, rgba(4, 10, 34, 0.05) 75%);
+}
+.shop-hero h1 {
+  color: #fff; font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+  letter-spacing: -0.02em; margin: 0 0 6px;
+}
+.shop-hero p { margin: 0; font-size: 1rem; color: rgba(236, 238, 255, 0.9); max-width: 46ch; }
+@media (max-width: 719px) {
+  .shop-hero { min-height: 140px; padding: 20px; background-position: 80% center; }
+  .shop-hero::before {
+    background: linear-gradient(90deg, rgba(4, 10, 34, 0.95) 0%, rgba(4, 10, 34, 0.72) 55%, rgba(4, 10, 34, 0.3) 100%);
+  }
+  .shop-hero p { font-size: 0.92rem; }
+}
 .shop-layout { display: grid; gap: 18px; align-items: start; }
 @media (min-width: 960px) { .shop-layout { grid-template-columns: 230px minmax(0, 1fr); } }
 .shop-side { display: none; }
@@ -579,9 +610,11 @@ p { margin: 0 0 1em; }
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 16px 18px; margin-bottom: 14px;
 }
+.side-box { border-top: 3px solid var(--green); }
+.side-help.side-box { border-top-color: var(--orange); }
 .side-title {
   font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink); margin-bottom: 10px;
+  color: var(--brand); margin-bottom: 10px;
 }
 .side-cats { list-style: none; margin: 0; padding: 0; }
 .side-cats li { border-bottom: 1px solid var(--bg-soft); }
@@ -590,11 +623,12 @@ p { margin: 0 0 1em; }
   display: block; padding: 9px 0; color: var(--ink); text-decoration: none; font-size: 0.93rem;
 }
 .side-cats a:hover { color: var(--brand); }
-.side-cats a[aria-current='page'] { color: var(--brand); font-weight: 700; }
+.side-cats a[aria-current='page'] {
+  color: var(--brand); font-weight: 700;
+  padding-left: 10px; border-left: 3px solid var(--green);
+}
 .side-help p { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 8px; }
 .side-help a { font-size: 0.92rem; font-weight: 600; }
-.shop-main-head h1 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); margin-bottom: 2px; }
-.shop-intro { margin: 0; }
 .shop-toolbar {
   display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
