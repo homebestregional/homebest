@@ -2,13 +2,17 @@
 -- Run AFTER schema.sql. Photos are files in /public, so Supabase Storage is not needed.
 -- Price is in KSh and includes VAT.
 
+insert into public.categories (name, slug, description, sort_order) values
+  ('Garden & outdoor', 'garden-outdoor', 'Tools that keep your compound neat and green.', 6)
+on conflict (slug) do nothing;
+
 insert into public.products
   (name, slug, category_id, sku, short_description, description, features, price, track_stock, stock, images, video_url, is_active, is_featured, sort_order)
 values
 (
   'ZB-LM32 Electric Lawn Mower (32 cm)',
   'zb-lm32-electric-lawn-mower',
-  (select id from public.categories where slug = 'home-appliances'),
+  (select id from public.categories where slug = 'garden-outdoor'),
   'ZB-LM32',
   'Cuts a neat, even lawn with a quiet brushless motor. 32 cm wide, with a 30 litre grass bag.',
   E'Keep your compound neat without the noise, the smoke and the fuel of a petrol mower. You plug this one in and push.\n\nThe motor is brushless. That means it is strong, it runs quietly and it lasts longer because there are fewer parts rubbing inside. It cuts a path 32 cm wide, which suits most home lawns and small compounds.\n\nThe cut grass goes straight into the 30 litre bag, so you are not left raking afterwards. You can set the cutting height in five steps, from 25 mm for a short, tidy finish to 65 mm when the grass is long or the sun is hot.\n\nThe handle folds down, so the mower stores in a small space.',
