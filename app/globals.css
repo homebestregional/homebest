@@ -156,7 +156,7 @@ p { margin: 0 0 1em; }
 }
 .header-row {
   display: flex; align-items: center; gap: 24px;
-  min-height: 114px;
+  min-height: 92px;
 }
 .logo {
   font-family: var(--font-display);
@@ -168,8 +168,18 @@ p { margin: 0 0 1em; }
   flex-shrink: 0;
 }
 .logo:hover { color: #fff; }
-.logo img { height: 74px; width: auto; display: block; }
-@media (min-width: 720px) { .logo img { height: 86px; } }
+/* Once the page is scrolled the logo folds away and the band gets slimmer. */
+.logo { transition: max-width .25s ease, opacity .2s ease, margin .25s ease; max-width: 320px; }
+.site-header { transition: background-color .2s ease; }
+.header-row { transition: min-height .25s ease; }
+.is-scrolled .logo { max-width: 0; opacity: 0; margin: 0; overflow: hidden; }
+.is-scrolled .header-row { min-height: 76px; gap: 0; }
+@media (max-width: 719px) { .is-scrolled .header-row { min-height: 60px; } }
+@media (prefers-reduced-motion: reduce) {
+  .logo, .header-row, .site-header { transition: none; }
+}
+.logo img { height: 59px; width: auto; display: block; }
+@media (min-width: 720px) { .logo img { height: 69px; } }
 
 /* Big search bar in the middle of the header */
 .header-search {
@@ -216,7 +226,7 @@ p { margin: 0 0 1em; }
   .header-search-row { display: none; }
 }
 @media (max-width: 719px) {
-  .header-row { min-height: 88px; }
+  .header-row { min-height: 70px; }
   .header-search-cat { display: none; }
 }
 

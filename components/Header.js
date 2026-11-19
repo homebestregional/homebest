@@ -50,12 +50,21 @@ function SearchBar({ idPrefix, categories }) {
 export default function Header({ categories = [] }) {
   const { count, ready } = useCart()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => setOpen(false), [pathname])
 
+  // Past the first scroll the logo folds away, so the header takes less room.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <header className="site-header">
+    <header className={'site-header' + (scrolled ? ' is-scrolled' : '')}>
       <div className="container header-row">
         <Link href="/" className="logo" aria-label={site.name + ' home'}>
           <img src="/brand/homebest-logo-white.svg" alt={site.name} />
