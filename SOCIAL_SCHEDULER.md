@@ -33,15 +33,17 @@ Do this once. It takes about fifteen minutes.
 1. Go to `developers.facebook.com/apps` and click **Create app**.
 2. Choose **Business**. Call it something like `Homebest Social`.
 3. Add the **Facebook Login** product.
-4. Open **Facebook Login → Settings** and paste this into *Valid OAuth Redirect URIs*,
-   using the live address from `SITE_URL`:
+4. Open **Facebook Login → Settings** and paste **both** of these into
+   *Valid OAuth Redirect URIs*, one per line:
 
    ```
-   https://YOUR-LIVE-ADDRESS/api/social/oauth/meta/callback
+   https://www.homebestregionallimited.com/api/social/oauth/meta/callback
+   https://homebest-three.vercel.app/api/social/oauth/meta/callback
    ```
 
-   If you test on the Vercel preview address too, add that one as well. The
-   address must match exactly, including `https` and no slash at the end.
+   The shop answers on both addresses. The code sends whichever one `SITE_URL`
+   holds, so listing both means it works either way. Copy them exactly: Meta
+   matches the whole address, including `https` and no slash at the end.
 5. Open **App settings → Basic** and copy the **App ID** and the **App secret**.
 6. Check that the Instagram account is a **Business** account and is joined to
    the Facebook Page. Instagram will not post from a personal account.
@@ -73,6 +75,12 @@ Needed in step 3, when posts start going out on their own:
 ```
 CRON_SECRET=any_long_random_string
 ```
+
+**Step 3 needs the Vercel Pro plan.** This project is on Hobby today, and Hobby
+only allows a timer that runs **once a day** — a schedule like every five
+minutes is refused when the site is built. The scheduler cannot post on time
+without it. Pro is $20 a month, and the shop needs it anyway before it can take
+payments.
 
 Redeploy after adding them. Keys are only read when the site is built.
 

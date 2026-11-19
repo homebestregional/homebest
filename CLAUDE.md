@@ -45,6 +45,7 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 ## Still to do
 - Social scheduler: create the Meta app, set `META_APP_ID` and `META_APP_SECRET`, run `supabase/social_scheduler.sql`, then connect the accounts (`SOCIAL_SCHEDULER.md`)
 - Social scheduler: composer, approval gate and the Instagram publisher (step 2), then the cron worker (step 3)
+- Social scheduler step 3 is blocked on the Vercel plan: Hobby only allows a once-a-day cron, and the worker needs `*/5 * * * *`. A more frequent schedule fails at deploy time. Pro is needed (the shop needs it for payments anyway).
 - Apply for TikTok's Content Posting audit early — it takes weeks
 - Import Homebest's real products, prices and photos
 - Contact details, delivery areas and fees, returns rules from Homebest
