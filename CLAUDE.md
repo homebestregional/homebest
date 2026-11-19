@@ -15,6 +15,7 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - `app/api/checkout` — creates the order, re-reads prices from the DB, opens Pesapal
 - `app/api/pesapal/ipn` — Pesapal IPN; `lib/orders.js#syncOrderPayment` does the paid/failed update once
 - `app/api/admin/*` — admin API, every route starts with `requireAdmin(request)`
+- `app/admin/social/`, `app/api/admin/social/*`, `lib/social/*` — social scheduler: posts to Instagram, Facebook, TikTok, YouTube and the WhatsApp Channel. Schema in `supabase/social_scheduler.sql`, setup steps in `SOCIAL_SCHEDULER.md`. Social routes start with `requireSocialUser(request)` from `lib/social/guard.js`
 - `lib/site.js` — business details and home page words (contact details still TODO)
 - `lib/pesapal.js` — Pesapal API 3.0 client (sandbox/live by `PESAPAL_ENV`)
 - `lib/options.js` — product sizes/models (`products.options` JSON: id, label, price, features, image). Cart lines are keyed `productId|sizeId`; checkout reads each size price from the DB
@@ -28,6 +29,10 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - Prefer line-targeted edits over regex replacements.
 - Server Supabase client: `getAdminClient()` in `lib/supabase-server.js` (service role key, `{ auth: { persistSession: false, autoRefreshToken: false } }`), created inside each handler, never at module level.
 - Staff accounts are in the `users` table (role `admin`). Customers check out as guests.
+- Social scheduler roles: `admin` (staff) and `social_manager` (a hired social media manager, scheduler only). `requireAdmin` already keeps `social_manager` out of orders, products, prices, categories and delivery — do not loosen it.
+- Never log an access token, a refresh token, or a full Meta response. Everything that leaves `lib/social/meta.js` goes through `scrubTokens()` first, and no token ever reaches `social_activity` or `post_logs`.
+- Social times: store UTC `timestamptz`, show and accept Africa/Nairobi. Never store a naive local time.
+- Every action in the scheduler writes one row to `social_activity`. No route updates or deletes those rows.
 - Use `SITE_URL` on the server, never `NEXT_PUBLIC_SITE_URL`.
 - Admin/dashboard pages: `export const dynamic = 'force-dynamic'`. `cacheComponents` is OFF in `next.config.mjs` on purpose so this works.
 - After login use `window.location.href`, not `router.push`.
@@ -38,6 +43,9 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - This Next.js version has breaking changes: check `node_modules/next/dist/docs/` before using an unfamiliar API (`middleware` is now `proxy`, `params` and `searchParams` are Promises).
 
 ## Still to do
+- Social scheduler: create the Meta app, set `META_APP_ID` and `META_APP_SECRET`, run `supabase/social_scheduler.sql`, then connect the accounts (`SOCIAL_SCHEDULER.md`)
+- Social scheduler: composer, approval gate and the Instagram publisher (step 2), then the cron worker (step 3)
+- Apply for TikTok's Content Posting audit early — it takes weeks
 - Import Homebest's real products, prices and photos
 - Contact details, delivery areas and fees, returns rules from Homebest
 - Test a full payment with Pesapal sandbox keys, then switch to live

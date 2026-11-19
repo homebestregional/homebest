@@ -15,6 +15,7 @@ const NAV = [
   { href: '/admin/products', label: 'Products' },
   { href: '/admin/categories', label: 'Categories' },
   { href: '/admin/delivery', label: 'Delivery' },
+  { href: '/admin/social', label: 'Social' },
 ]
 
 export default function AdminShell({ children }) {
@@ -34,6 +35,12 @@ export default function AdminShell({ children }) {
       }
       try {
         const me = await adminFetch('/api/admin/me')
+        // A hired social media manager only uses the scheduler. Send them
+        // straight there and keep the shop pages out of their way.
+        if (me.user?.role === 'social_manager' && !pathname.startsWith('/admin/social')) {
+          window.location.href = '/admin/social/accounts'
+          return
+        }
         if (alive) setState({ loading: false, user: me.user, error: '' })
       } catch (e) {
         if (alive) setState({ loading: false, user: null, error: e.message })
@@ -79,6 +86,10 @@ export default function AdminShell({ children }) {
 
   const isActive = (href) => (href === '/admin' ? pathname === '/admin' : pathname.startsWith(href))
 
+  // A social media manager sees only the Social link. Shop pages would turn
+  // them away anyway, so showing them would just be a dead end.
+  const nav = state.user?.role === 'social_manager' ? NAV.filter((n) => n.href.startsWith('/admin/social')) : NAV
+
   return (
     <AdminContext.Provider value={state.user}>
       <div className="admin">
@@ -89,7 +100,7 @@ export default function AdminShell({ children }) {
               <span>admin</span>
             </Link>
             <nav className="admin-nav" aria-label="Admin">
-              {NAV.map((n) => (
+              {nav.map((n) => (
                 <Link key={n.href} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>
                   {n.label}
                 </Link>
