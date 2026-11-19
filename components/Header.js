@@ -65,6 +65,23 @@ export default function Header({ categories = [] }) {
 
   return (
     <header className={'site-header' + (scrolled ? ' is-scrolled' : '')}>
+      <nav className="header-cats" aria-label="Categories">
+        <div className="container header-cats-row">
+          <Link href="/shop" className="cat-all">
+            <MenuIcon size={17} />
+            All categories
+          </Link>
+          {categories.map((c) => (
+            <Link key={c.id} href={'/category/' + c.slug}>
+              {c.name}
+            </Link>
+          ))}
+          <span className="header-cats-gap" aria-hidden="true" />
+          <Link href="/delivery-returns">Delivery and returns</Link>
+          <Link href="/contact">Contact us</Link>
+        </div>
+      </nav>
+
       <div className="container header-row">
         <Link href="/" className="logo" aria-label={site.name + ' home'}>
           <img src="/brand/homebest-logo-white.svg" alt={site.name} />
@@ -97,22 +114,6 @@ export default function Header({ categories = [] }) {
         <SearchBar idPrefix="mobile" categories={categories} />
       </div>
 
-      <nav className="header-cats" aria-label="Categories">
-        <div className="container header-cats-row">
-          <Link href="/shop" className="cat-all">
-            <MenuIcon size={17} />
-            All categories
-          </Link>
-          {categories.map((c) => (
-            <Link key={c.id} href={'/category/' + c.slug}>
-              {c.name}
-            </Link>
-          ))}
-          <span className="header-cats-gap" aria-hidden="true" />
-          <Link href="/delivery-returns">Delivery and returns</Link>
-          <Link href="/contact">Contact us</Link>
-        </div>
-      </nav>
 
       {open ? (
         <div className="mobile-menu" id="mobile-menu">
