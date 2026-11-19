@@ -156,7 +156,7 @@ p { margin: 0 0 1em; }
 }
 .header-row {
   display: flex; align-items: center; gap: 24px;
-  min-height: 136px;
+  min-height: 114px;
 }
 .logo {
   font-family: var(--font-display);
@@ -168,8 +168,8 @@ p { margin: 0 0 1em; }
   flex-shrink: 0;
 }
 .logo:hover { color: #fff; }
-.logo img { height: 92px; width: auto; display: block; }
-@media (min-width: 720px) { .logo img { height: 108px; } }
+.logo img { height: 74px; width: auto; display: block; }
+@media (min-width: 720px) { .logo img { height: 86px; } }
 
 /* Big search bar in the middle of the header */
 .header-search {
@@ -216,7 +216,7 @@ p { margin: 0 0 1em; }
   .header-search-row { display: none; }
 }
 @media (max-width: 719px) {
-  .header-row { min-height: 104px; }
+  .header-row { min-height: 88px; }
   .header-search-cat { display: none; }
 }
 
