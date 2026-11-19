@@ -2,78 +2,48 @@ import Link from 'next/link'
 import { site, whatsappLink } from '@/lib/site'
 import { getCategories, getProducts } from '@/lib/data'
 import { ProductGrid } from '@/components/ProductCard'
-import Image from 'next/image'
-import HeroVideo from '@/components/HeroVideo'
+import PromoBanner from '@/components/PromoBanner'
 
 export default async function HomePage() {
-  const [categories, featured] = await Promise.all([getCategories(), getProducts({ featured: true, limit: 8 })])
-  const products = featured.length ? featured : await getProducts({ sort: 'newest', limit: 8 })
+  const [categories, products, newest] = await Promise.all([
+    getCategories(),
+    getProducts(),
+    getProducts({ sort: 'newest', limit: 4 }),
+  ])
   const chatHref = whatsappLink('Hello Homebest, please help me choose the right product.')
+
+  // Banner slides, built from the real shop. Each pick shows the product's lead photo.
+  const water = categories.find((c) => c.slug === 'water-filters-purifiers')
+  const waterPicks = water ? products.filter((p) => p.category_id === water.id).slice(0, 4) : []
+  const slides = []
+  if (waterPicks.length) {
+    slides.push({
+      key: 'water',
+      eyebrow: 'Clean water at home',
+      title: 'Water you can',
+      accent: 'TRUST',
+      line: 'Take out the mud, the rust and the germs. Then drink without worry.',
+      cta: 'Shop water purifiers',
+      href: '/category/' + water.slug,
+      products: waterPicks,
+    })
+  }
+  if (newest.length) {
+    slides.push({
+      key: 'new',
+      eyebrow: 'Just landed',
+      title: 'New in the',
+      accent: 'SHOP',
+      line: 'The newest things we have brought in. Have a look before they go.',
+      cta: 'See everything',
+      href: '/shop',
+      products: newest,
+    })
+  }
 
   return (
     <>
-      {site.heroVideo ? (
-        <section className="vhero">
-          <HeroVideo {...site.heroVideo} />
-          <div className="vhero-shade" aria-hidden="true" />
-          <div className="container vhero-copy">
-            {site.eyebrow ? <span className="vhero-eyebrow">{site.eyebrow}</span> : null}
-            <h1>
-              <span>{site.headline}</span>{' '}
-              {site.headlineOrange || site.headlineGreen ? (
-                <span>
-                  <span className="vhero-orange">{site.headlineOrange}</span>{' '}
-                  <span className="vhero-green">{site.headlineGreen}</span>
-                </span>
-              ) : null}
-            </h1>
-            <p>{site.heroLine || site.intro}</p>
-            <div className="hero-actions">
-              <Link href="/shop" className="btn btn-pearl">
-                Shop now
-              </Link>
-              {chatHref ? (
-                <a href={chatHref} className="btn btn-glass" target="_blank" rel="noopener noreferrer">
-                  Ask us on WhatsApp
-                </a>
-              ) : null}
-            </div>
-          </div>
-        </section>
-      ) : (
-      <section className="hero">
-        <div className="container hero-grid">
-          <div>
-            {site.eyebrow ? <span className="eyebrow">{site.eyebrow}</span> : null}
-            <h1>{site.headline}</h1>
-            <p>{site.intro}</p>
-            <div className="hero-actions">
-              <Link href="/shop" className="btn btn-pearl">
-                Shop now
-              </Link>
-              {chatHref ? (
-                <a href={chatHref} className="btn btn-light" target="_blank" rel="noopener noreferrer">
-                  Ask us on WhatsApp
-                </a>
-              ) : null}
-            </div>
-          </div>
-          {site.heroImage ? (
-            <div className="hero-stage" aria-hidden="true">
-              <svg className="hero-rings" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="49.4" fill="none" stroke="rgba(255,255,255,.16)" strokeWidth=".22" />
-                <circle cx="50" cy="50" r="46.2" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth=".12" />
-                <path d="M 40 9.5 L 50 4.6 L 60 9.5" fill="none" stroke="#22b35e" strokeWidth=".5" />
-              </svg>
-              <div className="hero-floor" />
-              <div className="hero-product">
-                <Image src={site.heroImage} alt={site.heroImageAlt || ''} fill priority sizes="(min-width: 900px) 520px, 78vw" />
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </section>
-      )}
+      <PromoBanner slides={slides} />
 
       {categories.length ? (
         <section className="needs" aria-label="Shop by category">
@@ -94,11 +64,11 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <h2>{featured.length ? 'Popular right now' : 'New in the shop'}</h2>
-            <Link href="/shop">See all products</Link>
+            <h2>Everything we have</h2>
+            <Link href="/shop">Open the shop</Link>
           </div>
           {products.length ? (
-            <ProductGrid products={products} priorityCount={2} />
+            <ProductGrid products={products} priorityCount={4} />
           ) : (
             <div className="empty">
               <h2>Products are coming soon</h2>
