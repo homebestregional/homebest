@@ -168,15 +168,19 @@ p { margin: 0 0 1em; }
   flex-shrink: 0;
 }
 .logo:hover { color: #fff; }
-/* Once the page is scrolled the logo folds away and the band gets slimmer. */
-.logo { transition: max-width .25s ease, opacity .2s ease, margin .25s ease; max-width: 320px; }
-.site-header { transition: background-color .2s ease; }
-.header-row { transition: min-height .25s ease; }
-.is-scrolled .logo { max-width: 0; opacity: 0; margin: 0; overflow: hidden; }
-.is-scrolled .header-row { min-height: 76px; gap: 0; }
-@media (max-width: 719px) { .is-scrolled .header-row { min-height: 60px; } }
+/* Once the page is scrolled the whole blue band folds away and only the
+   dark category strip stays at the top. */
+.header-row, .header-search-row {
+  transition: max-height .25s ease, opacity .2s ease, padding .25s ease;
+  max-height: 260px; overflow: hidden;
+}
+.is-scrolled .header-row,
+.is-scrolled .header-search-row {
+  max-height: 0; min-height: 0; opacity: 0;
+  padding-top: 0; padding-bottom: 0;
+}
 @media (prefers-reduced-motion: reduce) {
-  .logo, .header-row, .site-header { transition: none; }
+  .header-row, .header-search-row { transition: none; }
 }
 .logo img { height: 59px; width: auto; display: block; }
 @media (min-width: 720px) { .logo img { height: 69px; } }
