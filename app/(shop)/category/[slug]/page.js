@@ -16,9 +16,10 @@ export default async function CategoryPage({ params, searchParams }) {
   const { slug } = await params
   const query = await searchParams
   const sort = typeof query?.sort === 'string' ? query.sort : ''
+  const search = typeof query?.q === 'string' ? query.q.slice(0, 60) : ''
   const category = await getCategory(slug)
   if (!category) notFound()
-  const [categories, products] = await Promise.all([getCategories(), getProducts({ categoryId: category.id, sort })])
+  const [categories, products] = await Promise.all([getCategories(), getProducts({ categoryId: category.id, sort, search })])
 
   return (
     <ShopListing
@@ -27,6 +28,7 @@ export default async function CategoryPage({ params, searchParams }) {
       categories={categories}
       activeSlug={category.slug}
       products={products}
+      search={search}
       sort={sort}
       basePath={'/category/' + category.slug}
     />

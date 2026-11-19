@@ -1,22 +1,47 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { site } from '@/lib/site'
 import { useCart } from '@/components/CartProvider'
 import { CartIcon, CloseIcon, MenuIcon, SearchIcon, UserIcon } from '@/components/Icons'
 
-function SearchBar({ idPrefix }) {
+function SearchBar({ idPrefix, categories }) {
+  const router = useRouter()
+  const [cat, setCat] = useState('')
+
+  function onSubmit(e) {
+    e.preventDefault()
+    const q = new FormData(e.currentTarget).get('q') || ''
+    const query = q ? '?q=' + encodeURIComponent(q) : ''
+    router.push(cat ? '/category/' + cat + query : '/shop' + query)
+  }
+
   return (
-    <form className="header-search" action="/shop" role="search">
+    <form className="header-search" onSubmit={onSubmit} role="search">
       <label htmlFor={idPrefix + '-q'} className="visually-hidden">
         Search products
       </label>
       <input id={idPrefix + '-q'} name="q" type="search" placeholder="What are you looking for?" />
-      <button type="submit" className="search-btn">
-        <SearchIcon size={18} />
-        <span>Search</span>
+
+      <div className="header-search-cat">
+        <label htmlFor={idPrefix + '-cat'} className="visually-hidden">
+          Choose a category
+        </label>
+        <select id={idPrefix + '-cat'} value={cat} onChange={(e) => setCat(e.target.value)}>
+          <option value="">All categories</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button type="submit" className="search-btn" aria-label="Search">
+        <SearchIcon size={22} />
       </button>
     </form>
   )
@@ -33,10 +58,10 @@ export default function Header({ categories = [] }) {
     <header className="site-header">
       <div className="container header-row">
         <Link href="/" className="logo" aria-label={site.name + ' home'}>
-          {site.logo ? <img src={site.logo} alt={site.name} /> : site.name}
+          <img src="/brand/homebest-logo-white.svg" alt={site.name} />
         </Link>
 
-        <SearchBar idPrefix="header" />
+        <SearchBar idPrefix="header" categories={categories} />
 
         <div className="header-actions">
           <Link href="/account" className="icon-button" aria-label="My account">
@@ -60,7 +85,7 @@ export default function Header({ categories = [] }) {
       </div>
 
       <div className="container header-search-row">
-        <SearchBar idPrefix="mobile" />
+        <SearchBar idPrefix="mobile" categories={categories} />
       </div>
 
       <nav className="header-cats" aria-label="Categories">
