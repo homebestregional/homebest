@@ -84,7 +84,7 @@ export default function Header({ categories = [] }) {
 
       <div className="container header-row">
         <Link href="/" className="logo" aria-label={site.name + ' home'}>
-          <img src="/brand/homebest-logo-lockup-white.png" alt={site.name} />
+          <img src="/brand/homebest-logo-lockup.png" alt={site.name} />
         </Link>
 
         <SearchBar idPrefix="header" categories={categories} />
