@@ -19,6 +19,8 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - `lib/pesapal.js` — Pesapal API 3.0 client (sandbox/live by `PESAPAL_ENV`)
 - `lib/options.js` — product sizes/models (`products.options` JSON: id, label, price, features, image). Cart lines are keyed `productId|sizeId`; checkout reads each size price from the DB
 - `supabase/schema.sql`, `supabase/seed.sql` — database (safe to re-run). Real products: `products-2026-11.sql`, then `products-merge-purifiers.sql`
+- `app/admin/stock-take/` — end-of-day stock count for staff (count, photo proof, owner view, item list). API in `app/api/admin/stock-take/` and `app/api/admin/stock-items/`
+- `supabase/stock-take.sql`, `supabase/stock-items-2026-11.sql` — stock take tables and the 1,411-item stock list (both safe to re-run)
 - `public/brand/` — the Seal logo (compact for the header, horizontal white for dark areas, stacked, seal only) and the share image
 - `public/products/<slug>/` — product photos (main.webp is a see-through cut-out, card.webp is the branded picture)
 - `public/videos/` — product videos (web size) with a same-name .jpg poster
@@ -37,8 +39,16 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - Client-facing copy: Grade 5–6 English, warm and plain. Prices in KSh. Kenyan examples.
 - This Next.js version has breaking changes: check `node_modules/next/dist/docs/` before using an unfamiliar API (`middleware` is now `proxy`, `params` and `searchParams` are Promises).
 
+## Stock take
+Separate from the shop. `stock_items` is the shop's whole stock list (1,411 items);
+`products` is only what the website sells. Keep them apart.
+- Daily list = the items that walk out easily. A full count is weekly, not daily.
+- `stock-photos` is a PRIVATE bucket; the owner's page shows photos through signed links.
+- `apply_stock_take(uuid)` copies each counted number onto the item after a count is saved.
+
 ## Still to do
 - Import Homebest's real products, prices and photos
 - Contact details, delivery areas and fees, returns rules from Homebest
 - Test a full payment with Pesapal sandbox keys, then switch to live
 - Connect the domain and set `SITE_URL`
+- Stock take: run the two `supabase/stock-*.sql` files, then check the daily list

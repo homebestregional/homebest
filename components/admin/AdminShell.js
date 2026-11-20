@@ -15,6 +15,7 @@ const NAV = [
   { href: '/admin/products', label: 'Products' },
   { href: '/admin/categories', label: 'Categories' },
   { href: '/admin/delivery', label: 'Delivery' },
+  { href: '/admin/stock-take', label: 'Stock take' },
 ]
 
 export default function AdminShell({ children }) {
