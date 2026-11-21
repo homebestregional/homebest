@@ -15,10 +15,10 @@ export default async function HomePage() {
   // Banner slides, built from the real shop.
   const water = categories.find((c) => c.slug === 'water-filters-purifiers')
   const waterAll = water ? products.filter((p) => p.category_id === water.id) : []
-  const pick = (needle) => waterAll.find((p) => p.slug.includes(needle) || p.name.toLowerCase().includes(needle))
-  const uv = pick('uv')
-  const plain = pick('filtration-only') || pick('ultrafiltration')
-  const spare = pick('filter') && pick('filter') !== plain ? pick('replacement') || pick('membrane') : null
+  const bySlug = (slug) => waterAll.find((p) => p.slug === slug)
+  const uv = bySlug('water-purifier-uv-2000')
+  const plain = bySlug('water-purifier-filtration-2000')
+  const spare = bySlug('replacement-filters')
   const picks = [uv, plain].filter(Boolean).slice(0, 2)
   const slides = []
   if (picks.length) {
