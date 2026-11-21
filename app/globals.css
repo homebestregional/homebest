@@ -11,6 +11,8 @@
   --brand-tint: #eef0f8;   /* very light blue for backgrounds */
   --green: #22b35e;        /* bright green: on dark areas, fills and thin lines */
   --green-ink: #12793f;    /* deeper green: text, links and buttons on white */
+  --hero-blue: #182668;    /* deep blue of the home hero panel */
+  --rust: #d8451f;         /* reddish orange: the category strip */
   --orange: #f7931e;       /* bright orange: small highlights */
   --orange-ink: #b45309;   /* deeper orange: orange text on white */
   --accent: var(--green);  /* thin lines and small marks */
@@ -155,7 +157,7 @@ p { margin: 0 0 1em; }
 /* Header: coloured band with a big logo and a big search bar */
 .site-header {
   position: sticky; top: 0; z-index: 40;
-  background: var(--brand);
+  background: var(--hero-blue);
   border-bottom: 0;
 }
 .header-row {
@@ -239,18 +241,18 @@ p { margin: 0 0 1em; }
   .header-search-cat { display: none; }
 }
 
-/* Category strip under the search bar: navy, like the brand cards */
-.header-cats { display: none; background: var(--brand-deep); }
+/* Category strip above the search bar: reddish orange */
+.header-cats { display: none; background: var(--rust); }
 .header-cats-row {
   display: flex; align-items: center; gap: 32px;
   min-height: 52px; white-space: nowrap; overflow-x: auto;
 }
 .header-cats a {
-  color: rgba(236, 238, 255, 0.92); text-decoration: none;
+  color: rgba(255, 248, 244, 0.95); text-decoration: none;
   font-size: 0.9rem; font-weight: 500; padding: 9px 0;
   border-bottom: 2px solid transparent;
 }
-.header-cats a:hover { color: #fff; border-bottom-color: var(--green); }
+.header-cats a:hover { color: #fff; border-bottom-color: #fff; }
 .cat-all {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-display); font-weight: 600 !important;
@@ -276,7 +278,7 @@ p { margin: 0 0 1em; }
 .mobile-menu {
   border-top: 1px solid rgba(255,255,255,0.2);
   padding: 12px 0 18px;
-  background: var(--brand);
+  background: var(--hero-blue);
 }
 .mobile-menu form { margin-bottom: 10px; }
 .mobile-menu input {
