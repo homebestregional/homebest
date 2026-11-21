@@ -12,32 +12,54 @@ export default async function HomePage() {
   ])
   const chatHref = whatsappLink('Hello Homebest, please help me choose the right product.')
 
-  // Banner slides, built from the real shop. Each pick shows the product's lead photo.
+  // Banner slides, built from the real shop.
   const water = categories.find((c) => c.slug === 'water-filters-purifiers')
-  const waterPicks = water ? products.filter((p) => p.category_id === water.id).slice(0, 4) : []
+  const waterAll = water ? products.filter((p) => p.category_id === water.id) : []
+  const pick = (needle) => waterAll.find((p) => p.slug.includes(needle) || p.name.toLowerCase().includes(needle))
+  const uv = pick('uv')
+  const plain = pick('filtration-only') || pick('ultrafiltration')
+  const spare = pick('filter') && pick('filter') !== plain ? pick('replacement') || pick('membrane') : null
+  const picks = [uv, plain].filter(Boolean).slice(0, 2)
   const slides = []
-  if (waterPicks.length) {
+  if (picks.length) {
     slides.push({
       key: 'water',
-      eyebrow: 'Clean water at home',
-      title: 'Water you can',
-      accent: 'TRUST',
+      ticker: ['Festive season offer', '10% off 2,000 L/h water purifiers', 'For a limited time only'],
+      tags: [
+        { label: 'Hot pick', tone: 'solid' },
+        { label: 'Top selling', tone: 'outline' },
+        { label: 'New arrival', tone: 'green' },
+      ],
+      eyebrow: 'New technology',
+      title: 'Water',
+      accent: 'Purifier',
       line: 'Take out the mud, the rust and the germs. Then drink without worry.',
-      cta: 'Shop water purifiers',
-      href: '/category/' + water.slug,
-      products: waterPicks,
+      deal: { pct: '10%', title: 'Festive season deal on water purifiers', note: 'Filtration only and filtration with UV. Limited stock.', sealNote: 'Festive deal' },
+      cta: 'Grab the deal',
+      href: water ? '/category/' + water.slug : '/shop',
+      link2: { label: 'See all water purifiers', href: water ? '/category/' + water.slug : '/shop' },
+      badges: ['Hot pick', 'Top selling'],
+      products: picks,
+      wide: spare || null,
+      footnote: 'Water you can trust \u00b7 Homebest Regional Limited',
     })
   }
   if (newest.length) {
     slides.push({
       key: 'new',
-      eyebrow: 'Just landed',
+      ticker: ['Just landed', 'New stock in the shop', 'While it lasts'],
+      tags: [{ label: 'New arrival', tone: 'green' }],
+      eyebrow: 'Fresh in',
       title: 'New in the',
-      accent: 'SHOP',
+      accent: 'Shop',
       line: 'The newest things we have brought in. Have a look before they go.',
       cta: 'See everything',
       href: '/shop',
-      products: newest,
+      link2: { label: 'Browse all categories', href: '/shop' },
+      badges: ['New', 'New'],
+      products: newest.slice(0, 2),
+      wide: newest[2] || null,
+      footnote: 'Quality you can trust \u00b7 Homebest Regional Limited',
     })
   }
 
