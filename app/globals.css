@@ -141,6 +141,10 @@ p { margin: 0 0 1em; }
 .btn-light:hover { border-color: #fff; color: #fff; }
 .btn-whatsapp { background: #1f7a4d; color: #fff; }
 .btn-whatsapp:hover { background: #17623d; color: #fff; }
+/* Add to cart: blue button, bold orange words */
+.btn-cart { background: var(--brand); border-color: var(--brand); color: var(--orange); font-weight: 800; }
+.btn-cart:hover:not(:disabled) { background: var(--brand-deep); border-color: var(--brand-deep); color: var(--orange); }
+.btn-cart:disabled { background: var(--brand); border-color: var(--brand); color: rgba(255,255,255,.72); font-weight: 600; }
 .btn-block { width: 100%; }
 .btn-small { min-height: 38px; padding: 0 14px; font-size: 0.92rem; }
 .link-button {
@@ -628,8 +632,8 @@ p { margin: 0 0 1em; }
 .product-card-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .product-card-action { padding: 8px 12px 12px; }
 /* Green "go" buttons on product cards, like M-Pesa green */
-.product-card-action .btn-primary { background: var(--green-ink); }
-.product-card-action .btn-primary:hover:not(:disabled) { background: #0d5c30; box-shadow: 0 8px 22px rgba(18, 121, 63, 0.3); }
+.product-card-action .btn-cart { background: var(--brand); border-color: var(--brand); color: var(--orange); }
+.product-card-action .btn-cart:hover:not(:disabled) { background: var(--brand-deep); border-color: var(--brand-deep); color: var(--orange); box-shadow: 0 8px 22px rgba(46, 48, 146, 0.3); }
 /* Card buttons must fit the card: let the words wrap, never spill out */
 .product-card-action .btn {
   white-space: normal; text-align: center; line-height: 1.25;

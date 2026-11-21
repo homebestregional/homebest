@@ -8,10 +8,11 @@ import { CheckIcon } from '@/components/Icons'
 export default function AddToCartButton({ product, qty = 1, className = 'btn btn-outline btn-small btn-block', disabled }) {
   const { addItem } = useCart()
   const [added, setAdded] = useState(false)
+  const cls = className + ' btn-cart'
 
   if (disabled) {
     return (
-      <button type="button" className={className} disabled>
+      <button type="button" className={cls} disabled>
         Out of stock
       </button>
     )
@@ -20,7 +21,7 @@ export default function AddToCartButton({ product, qty = 1, className = 'btn btn
   return (
     <button
       type="button"
-      className={className}
+      className={cls}
       onClick={() => {
         addItem(product, qty)
         setAdded(true)
