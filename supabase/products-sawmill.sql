@@ -38,6 +38,6 @@ on conflict (slug) do update set
   sort_order = excluded.sort_order,
   updated_at = now();
 
--- Keep the baler just behind the sawmill in the shop order.
-update public.products set sort_order = 1, updated_at = now()
+-- Both machines sit in the first tier; newest (the sawmill) leads, baler next.
+update public.products set sort_order = 0, updated_at = now()
 where slug = 'vertical-hydraulic-baler-40t';
