@@ -312,7 +312,7 @@ p { margin: 0 0 1em; }
 .promo-tags li{padding:7px 15px;border-radius:999px;font-family:var(--font-display);
   font-size:.68rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
 .tag-solid{background:var(--orange);color:#1a1a1a}
-.tag-outline{border:1.5px solid rgba(240,93,0,.85);color:var(--orange)}
+.tag-outline{border:1.5px solid rgba(247,147,30,.85);color:var(--orange)}
 .tag-green{border:1.5px solid rgba(34,179,94,.8);color:#3fd27e}
 
 .promo-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:10px;
@@ -335,7 +335,7 @@ p { margin: 0 0 1em; }
   background:var(--orange);color:#1a1a1a;text-decoration:none;
   font-family:var(--font-display);font-weight:700;font-size:.84rem;letter-spacing:.09em;text-transform:uppercase;
   transition:transform .18s,box-shadow .18s}
-.promo-cta:hover{color:#1a1a1a;transform:translateY(-2px);box-shadow:0 12px 26px rgba(240,93,0,.4)}
+.promo-cta:hover{color:#1a1a1a;transform:translateY(-2px);box-shadow:0 12px 26px rgba(247,147,30,.4)}
 .promo-link{color:var(--green);text-decoration:none;border-bottom:1.5px solid rgba(34,179,94,.5);padding-bottom:3px;
   font-family:var(--font-display);font-weight:700;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase}
 .promo-link:hover{color:#fff;border-color:#fff}
@@ -353,7 +353,7 @@ p { margin: 0 0 1em; }
   font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .promo-pick-name{font-family:var(--font-display);font-weight:700;font-size:.92rem;line-height:1.25;margin-bottom:3px}
 .promo-pick-spec{font-size:.76rem;color:var(--muted);line-height:1.35;margin-bottom:8px}
-.promo-price{margin:auto 0 0;font-family:var(--font-display);font-weight:800;font-size:1.12rem;color:var(--orange)}
+.promo-price{margin:auto 0 0;font-family:var(--font-display);font-weight:800;font-size:1.12rem;color:var(--green-ink)}
 
 .promo-seal{position:absolute;z-index:3;top:-18px;right:-10px;width:112px;height:112px;border-radius:50%;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
@@ -371,7 +371,7 @@ p { margin: 0 0 1em; }
 .promo-wide-text{flex:1;min-width:0}
 .promo-wide-text strong{display:block;font-family:var(--font-display);font-size:.92rem;line-height:1.25}
 .promo-wide-text small{display:block;font-size:.76rem;color:var(--muted);margin-top:2px}
-.promo-wide-price{flex-shrink:0;font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--brand)}
+.promo-wide-price{flex-shrink:0;font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--green-ink)}
 
 .promo-foot{margin:0;padding:12px 20px 18px;text-align:center;
   color:rgba(236,238,255,.6);font-size:.8rem;font-style:italic;
@@ -648,7 +648,7 @@ p { margin: 0 0 1em; }
   .price-off { font-size: 0.72rem; padding: 1px 5px; }
   .product-card-name { font-size: 0.88rem; }
 }
-.price { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; white-space: nowrap; color: var(--brand); }
+.price { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; white-space: nowrap; color: var(--green-ink); }
 .price-ask { color: var(--ink-soft); font-weight: 500; font-size: 0.95rem; }
 .price-from { font-weight: 500; color: var(--ink-soft); font-size: 0.8em; margin-right: 2px; }
 .price-off {
