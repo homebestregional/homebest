@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { adminFetch } from '@/lib/supabase-browser'
+import SocialTabs from '@/components/admin/SocialTabs'
 import { PLATFORM_ORDER, platformMeta, CONNECTORS, STATUS_BADGE } from '@/lib/social/platforms'
 
 // Every channel this tool can post to, connected or not. A channel that needs
@@ -99,6 +100,7 @@ export default function SocialAccountsPage() {
       <p className="muted" style={{ marginTop: '-6px' }}>
         {brand ? 'Where ' + brand.name + ' can post. All times are Nairobi time.' : 'Loading…'}
       </p>
+      <SocialTabs />
 
       {done ? <div className="notice notice-success">{done}</div> : null}
       {error ? <div className="notice notice-error">{error}</div> : null}

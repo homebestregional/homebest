@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { adminFetch } from '@/lib/supabase-browser'
+import SocialTabs from '@/components/admin/SocialTabs'
 
 // Everything done in the scheduler, newest first, grouped by day.
 //
@@ -106,6 +107,7 @@ export default function SocialActivityPage() {
       <p className="muted" style={{ marginTop: '-6px' }}>
         {brand ? 'Everything done in ' + brand.name + '’s scheduler, newest first. Nairobi time.' : 'Loading…'}
       </p>
+      <SocialTabs />
 
       {people.length ? (
         <form className="toolbar" onSubmit={function (e) { e.preventDefault() }}>

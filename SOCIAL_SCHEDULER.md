@@ -86,10 +86,15 @@ Redeploy after adding them. Keys are only read when the site is built.
 
 ---
 
-## 3. Make the tables
+## 3. Make the tables — already done
 
-Open **Supabase → SQL editor**, paste in `supabase/social_scheduler.sql`, and run
-it. It is safe to run again later.
+This was run against Homebest's Supabase project on 21 November 2026. Seven
+tables, row level security on all of them, the `social-media` bucket, and the
+Homebest brand are all in place. The shop's own tables were not touched.
+
+You only need this again if you rebuild the database. The file is safe to run
+any number of times: open **Supabase → SQL editor**, paste in
+`supabase/social_scheduler.sql`, and run it.
 
 It makes seven tables, turns on row level security with no public access, and
 creates a public storage bucket called `social-media`. That bucket has to be

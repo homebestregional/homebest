@@ -33,6 +33,7 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - Never log an access token, a refresh token, or a full Meta response. Everything that leaves `lib/social/meta.js` goes through `scrubTokens()` first, and no token ever reaches `social_activity` or `post_logs`.
 - Social times: store UTC `timestamptz`, show and accept Africa/Nairobi. Never store a naive local time.
 - Every action in the scheduler writes one row to `social_activity`. No route updates or deletes those rows.
+- Nothing posts without approval. The gate lives in `publishOneTarget` in `lib/social/publish.js`, not in the page, so a new route cannot skip it. Both the Post now button and the step 3 timer go through that one function.
 - Use `SITE_URL` on the server, never `NEXT_PUBLIC_SITE_URL`.
 - Admin/dashboard pages: `export const dynamic = 'force-dynamic'`. `cacheComponents` is OFF in `next.config.mjs` on purpose so this works.
 - After login use `window.location.href`, not `router.push`.
@@ -43,8 +44,8 @@ Stack: Next.js 16 (App Router, plain JavaScript, no TypeScript), Supabase (Postg
 - This Next.js version has breaking changes: check `node_modules/next/dist/docs/` before using an unfamiliar API (`middleware` is now `proxy`, `params` and `searchParams` are Promises).
 
 ## Still to do
-- Social scheduler: create the Meta app, set `META_APP_ID` and `META_APP_SECRET`, run `supabase/social_scheduler.sql`, then connect the accounts (`SOCIAL_SCHEDULER.md`)
-- Social scheduler: composer, approval gate and the Instagram publisher (step 2), then the cron worker (step 3)
+- Social scheduler: create the Meta app and set `META_APP_ID` and `META_APP_SECRET`, then connect the accounts (`SOCIAL_SCHEDULER.md`). The SQL was already run against this project on 21 Nov 2026 — seven tables, RLS on, `social-media` bucket, Homebest seeded.
+- Social scheduler: the cron worker (step 3), video channels (step 4), queue/calendar/post detail (step 5). Steps 1 and 2 are built: accounts, activity trail, composer, approval gate, Instagram publisher, Post now.
 - Social scheduler step 3 is blocked on the Vercel plan: Hobby only allows a once-a-day cron, and the worker needs `*/5 * * * *`. A more frequent schedule fails at deploy time. Pro is needed (the shop needs it for payments anyway).
 - Apply for TikTok's Content Posting audit early — it takes weeks
 - Import Homebest's real products, prices and photos
