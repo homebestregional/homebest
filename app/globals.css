@@ -978,3 +978,20 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* The home page h1. Search engines read it to decide what the whole site is
+   about. It stays visible on purpose - a hidden h1 is treated as a trick. */
+.site-h1 {
+  max-width: 1200px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+  font-family: 'Montserrat Variable', Montserrat, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: #565a7d;
+}
+@media (min-width: 768px) {
+  .site-h1 { font-size: 17px; }
+}
