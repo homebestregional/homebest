@@ -4,6 +4,15 @@ import { getCategories, getProducts } from '@/lib/data'
 import { ProductGrid } from '@/components/ProductCard'
 import PromoBanner from '@/components/PromoBanner'
 
+// The root layout sets alternates.canonical to './'. On every other route
+// that resolves to the route's own path, but on the home route it resolved
+// to /index - a live duplicate of this page that is in no sitemap. That told
+// Google to index /index instead of the home page, which is the page that
+// carries the Organization schema. Setting it explicitly here fixes it.
+export const metadata = {
+  alternates: { canonical: '/' },
+}
+
 export default async function HomePage() {
   const [categories, products, newest] = await Promise.all([
     getCategories(),
@@ -66,6 +75,12 @@ export default async function HomePage() {
   return (
     <>
       <PromoBanner slides={slides} />
+
+      {/* The home page had no h1. Search engines use it to decide what the
+          whole site is about, so it names the registered company. */}
+      <h1 className="site-h1">
+        Homebest Regional Limited — water purifiers and home appliances in Kenya
+      </h1>
 
       {categories.length ? (
         <section className="needs" aria-label="Shop by category">

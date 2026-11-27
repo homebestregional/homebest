@@ -15,6 +15,11 @@ const nextConfig = {
       { protocol: 'https', hostname: supabaseHost, pathname: '/storage/v1/object/public/**' },
     ],
   },
+  // /index served a second copy of the home page at a second address.
+  // One page, one address.
+  async redirects() {
+    return [{ source: '/index', destination: '/', permanent: true }]
+  },
 }
 
 export default nextConfig
